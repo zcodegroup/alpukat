@@ -10,6 +10,7 @@ app.factory('CustomerSvc', function($http, $q, _) {
                 var flag = q == undefined || q == "";
                 var out = flag ? res.data.splice(0, 100) :
                     _.filter(res.data, function(o) {
+                        q = q.toLowerCase();
                         var a = o.name.toLowerCase();
                         var b = o.meterno.toLowerCase();
                         return a.indexOf(q) != -1 || b.indexOf(q) != -1;
