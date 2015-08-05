@@ -1,4 +1,4 @@
-var app = angular.module("alpukat", ['ngMaterial', 'ui.router', 'ngMap']);
+var app = angular.module("alpukat", ['ngMaterial', 'ui.router', 'ngMap', 'underscore']);
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
     $stateProvider
@@ -34,37 +34,39 @@ app.config(function($mdIconProvider) {
         .defaultIconSet('img/icons/sets/core-icons.svg', 24);
 });
 
-app.controller('AppCtrl', function($scope) {
-	$scope.share = {};
+app.controller('AppCtrl', function($scope, $state) {
+    $scope.share = {};
+    $scope.gohome = function (){
+        $scope.share.subtitle = null;
+        $state.go('home');
+    }
 });
 
-app.controller('CustomerCtrl', function($scope, $mdDialog) {
-    $scope.map = {
-        center: {
-            latitude: 45,
-            longitude: -73
-        },
-        zoom: 8
-    };
-    var imagePath = 'img/60.jpeg';
+app.filter('propsFilter', function() {
+    return function(items, props) {
+        var out = [];
+        if (angular.isArray(items)) {
+            items.forEach(function(item) {
+                var itemMatches = false;
 
-    $scope.customers = [];
-    var a = {
-        name: 'Min Li Chan',
-        meterno: "98898988"
-    }
-    for (var i = 0; i < 10; i++) {
-        $scope.customers.push(angular.copy(a));
-    }
+                var keys = Object.keys(props);
+                for (var i = 0; i < keys.length; i++) {
+                    var prop = keys[i];
+                    var text = props[prop].toLowerCase();
+                    if (item[prop].toString().toLowerCase().indexOf(text) !== -1) {
+                        itemMatches = true;
+                        break;
+                    }
+                }
 
-    $scope.customerDetail = function (){
-        $mdDialog.show(
-          $mdDialog.alert()
-            .title('Secondary Action')
-            .content('Secondary actions can be used for one click actions')
-            .ariaLabel('Secondary click demo')
-            .ok('Neat!')
-            .targetEvent(event)
-        );
+                if (itemMatches) {
+                    out.push(item);
+                    // if (out.length > 100) return out;
+                }
+            });
+        } else {
+            out = items;
+        }
+        return out;
     }
-})
+});

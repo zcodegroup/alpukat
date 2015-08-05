@@ -2,21 +2,23 @@
     <div flex="29">
         <div layout="column">
             <h2 class="md-title">Daftar Pelanggan</h2>
-            <md-input-container md-no-float>
-                <md-icon md-svg-src="img/icons/ic_search_24px.svg"></md-icon>
-                <input ng-model="query" type="search" placeholder="Cari..">
-            </md-input-container>
+            <form ng-submit="search()">
+                <md-input-container md-no-float>
+                    <md-icon md-svg-src="img/icons/ic_search_24px.svg"></md-icon>
+                    <input ng-model="query" type="search" placeholder="Cari..">
+                </md-input-container>
+            </form>
             <md-content style="height:400px">
                 <md-list>
                     <!-- <md-subheader class="md-no-sticky">Avatar with Secondary Action Icon</md-subheader> -->
-                    <md-list-item class="md-2-line" ng-repeat="item in customers track by $index">
+                    <md-list-item class="md-2-line" ng-repeat="item in customers">
                         <md-checkbox ng-model="item.selected"></md-checkbox>
                         <div class="md-list-item-text">
-                            <h3>{{ item.name }}</h3>
-                            <p>{{ item.meterno }}</p>
+                            <h3><span ng-bind-html="highlight(item.name)"></span></h3>
+                            <p><span ng-bind-html="highlight(item.meterno)"></span></p>
                         </div>
                         <!-- <md-icon md-svg-src="img/icons/ic_person_24px.svg" ng-click="customerDetail()"></md-icon> -->
-                        <md-icon md-svg-src="img/icons/ic_person_24px.svg" ng-click="customerDetail()" aria-label="Open Chat" class="md-secondary"></md-icon>
+                        <md-icon md-svg-src="img/icons/ic_person_24px.svg" ng-click="customerDetail(item, $event)" aria-label="Open Chat" class="md-secondary"></md-icon>
                     </md-list-item>
                 </md-list>
             </md-content>

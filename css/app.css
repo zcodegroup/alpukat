@@ -8,6 +8,10 @@
     margin: inherit;
 }
 
+.highlightedText {
+    background: yellow;
+}
+
 
 /*
 md-toolbar.my-toolbar {
