@@ -12,13 +12,12 @@
                 <md-list>
                     <!-- <md-subheader class="md-no-sticky">Avatar with Secondary Action Icon</md-subheader> -->
                     <md-list-item class="md-2-line" ng-repeat="item in customers">
-                        <md-checkbox ng-model="item.selected"></md-checkbox>
+                        <md-checkbox ng-change="select(item)" ng-model="item.selected"></md-checkbox>
                         <div class="md-list-item-text">
                             <h3><span ng-bind-html="highlight(item.name)"></span></h3>
                             <p><span ng-bind-html="highlight(item.meterno)"></span></p>
                         </div>
-                        <!-- <md-icon md-svg-src="img/icons/ic_person_24px.svg" ng-click="customerDetail()"></md-icon> -->
-                        <md-icon md-svg-src="img/icons/ic_person_24px.svg" ng-click="customerDetail(item, $event)" aria-label="Open Chat" class="md-secondary"></md-icon>
+                        <md-icon md-svg-src="img/icons/ic_person_24px.svg" ng-if="state.current.name === 'customer.map'" ng-click="customerDetail(item, $event)" aria-label="Open Chat" class="md-secondary"></md-icon>
                     </md-list-item>
                 </md-list>
             </md-content>
@@ -26,12 +25,12 @@
     </div>
     <div flex="70">
         <div layout="column">
-            <h2 class="md-title">Peta Pelanggan</h2>
+            <h2 class="md-title">Detail Pelanggan - {{subtitle}}
+            	<a href="" ui-sref="customer.grid"><md-icon md-svg-icon="social:domain"></md-icon></a>
+            	<a href="" ui-sref="customer.map"><md-icon md-svg-icon="social:public"></md-icon></a>
+        	</h2>
             <md-content style="height:420px">
-                <map zoom="9" center="-2.8994298, 107.9140491" on-center-changed="centerChanged()">
-                    <marker position="-2.8994298, 107.9140491" on-click="customerDetail()" title="Click to zoom"></marker>
-                    <marker position="-2.8994298, 107.9140491" on-click="customerDetail()" title="Click to zoom"></marker>
-                </map>
+                <ui-view></ui-view>
             </md-content>
         </div>
     </div>

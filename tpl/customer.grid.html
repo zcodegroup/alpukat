@@ -1,0 +1,72 @@
+<div layout="row" flex="100">
+    <div flex="60">
+        Informasi Pelanggan
+        <md-content>
+            <pre>{{item.selected}}</pre>
+            <div layout layout-sm="column">
+                <md-input-container flex>
+                    <label>IDPEL</label>
+                    <input ng-model="customer.idpel" type="text" disabled>
+                </md-input-container>
+                <md-input-container flex>
+                    <label>Nama</label>
+                    <input ng-model="customer.name" type="text" disabled>
+                </md-input-container>
+            </div>
+            <div layout layout-sm="column">
+                <md-input-container flex>
+                    <label>No Meter</label>
+                    <input ng-model="customer.meterno" type="text" disabled>
+                </md-input-container>
+                <md-input-container flex>
+                    <label>Daya</label>
+                    <input ng-model="customer.daya" type="text" disabled>
+                </md-input-container>
+            </div>
+            <div layout layout-sm="column">
+                <md-input-container flex>
+                    <label>Gardu</label>
+                    <input ng-model="customer.gardu" type="text" disabled>
+                </md-input-container>
+                <md-input-container flex>
+                    <label>Tarif</label>
+                    <input ng-model="customer.tarif" type="text" disabled>
+                </md-input-container>
+            </div>
+            <div layout layout-sm="column">
+                <md-input-container flex>
+                    <label>Tiang</label>
+                    <input ng-model="customer.tiang" type="text" disabled>
+                </md-input-container>
+                <md-input-container flex>
+                    <label>Latitude</label>
+                    <input ng-model="customer.latitude" type="text" disabled>
+                </md-input-container>
+                <md-input-container flex>
+                    <label>Longitude</label>
+                    <input ng-model="customer.longitude" type="text" disabled>
+                </md-input-container>
+            </div>
+            <div layout layout-sm="column">
+                <md-input-container flex>
+                    <label>Alamat</label>
+                    <input ng-model="customer.address" type="text" disabled>
+                </md-input-container>
+            </div>
+        </md-content>
+    </div>
+    <div flex="40">
+        Hasil Pemeriksaan
+        <md-list ng-show="customer">
+            <md-list-item class="md-2-line" ng-repeat="item in inspects">
+                <div class="md-list-item-text">
+                    <h3>{{ item.result }}</h3>
+                    <p>{{item.date|date:'dd MMMM yyyy'}}</p>
+                </div>
+                <div class="md-secondary">
+                    <p>{{item.kwh}}</p>
+                </div>
+            </md-list-item>
+        </md-list>
+    </div>
+</div>

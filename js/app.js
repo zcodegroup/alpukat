@@ -9,8 +9,19 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
 
     .state('customer', {
         url: '/customer',
+        abstract: true,
         templateUrl: 'tpl/customer.html'
     })
+
+	.state('customer.grid', {
+	    url: '/customer/grid',
+	    templateUrl: 'tpl/customer.grid.html',
+	})    
+
+	.state('customer.map', {
+	    url: '/customer/map',
+	    templateUrl: 'tpl/customer.map.html'
+	})
 
     .state('test', {
         url: '/test',
