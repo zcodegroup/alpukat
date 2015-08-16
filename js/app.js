@@ -1,4 +1,4 @@
-var app = angular.module("alpukat", ['ngMaterial', 'ui.router', 'ngMap', 'underscore']);
+var app = angular.module("alpukat", ['ngMaterial', 'ui.router', 'ngMap', 'underscore', 'angular-loading-bar']);
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
     $stateProvider
