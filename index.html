@@ -13,11 +13,32 @@
     <md-content layout-fill>
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2>
+                <!-- <h2>
                 <a href="" ui-sref="home" ng-click="gohome()">Alpukat</a> 
                 <span ng-if="share.subtitle"> > </span>
                 <a href="">{{share.subtitle}}</a>
-              </h2>
+              </h2> -->
+                <span flex></span>
+                <md-button ng-click="gohome()">
+                    <md-icon md-menu-align-target md-svg-icon="device:dvr"></md-icon>
+                    Home
+                </md-button>
+                <md-button ui-sref="customer.grid">
+                    <md-icon md-menu-align-target md-svg-icon="social:person"></md-icon>
+                    Pelanggan
+                </md-button>
+                <md-button>
+                    <md-icon md-menu-align-target md-svg-icon="device:wifi-tethering"></md-icon>
+                    Gardu
+                </md-button>
+                <md-button>
+                    <md-icon md-menu-align-target md-svg-icon="device:gps-fixed"></md-icon>
+                    Pemeriksaan
+                </md-button>
+                <md-button>
+                    <md-icon md-menu-align-target md-svg-icon="device:wifi-lock"></md-icon>
+                    Login
+                </md-button>
                 <span flex></span>
             </div>
         </md-toolbar>

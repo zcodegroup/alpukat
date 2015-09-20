@@ -4,7 +4,23 @@ app.factory('CustomerSvc', function($http, $q, _) {
             return $http.get('js/local/data.js');
         },
 
-        search: function(q) {
+        search: function(q){
+        	var d = $q.defer();
+        	var url = "http://localhost:3000/api/AlpukatCustomer?";
+        	var filter = "filter[where][name][regexp]="+q+"/i&";
+        	var token = "access_token=MWob5MXT64yRBImh07tN7hEZEF3W2brt82n1UXDQXmIJZV6av06RACA6PVS7EscJ";
+        	$http.get(url+filter+token).then(function (res){
+        		console.log(res);
+        		d.resolve({
+        			data: res.data
+        		})
+        	}, function (e){
+        		d.reject(e);
+        	});
+        	return d.promise;
+        },
+
+        search2: function(q) {
             var d = $q.defer();
             $http.get('js/local/data.js').then(function(res) {
                 var flag = q == undefined || q == "";
