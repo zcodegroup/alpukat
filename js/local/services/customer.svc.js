@@ -8,8 +8,10 @@ app.factory('CustomerSvc', function($http, $q, _) {
         	var d = $q.defer();
         	var url = "http://zcodeapi.herokuapp.com/api/AlpukatCustomer?";
         	var filter = "filter[where][name][regexp]="+q+"/i&";
+        	var limit = "filter[limit]=5&";
+        	var order = "filter[order]=name&";
         	var token = "access_token=MWob5MXT64yRBImh07tN7hEZEF3W2brt82n1UXDQXmIJZV6av06RACA6PVS7EscJ";
-        	$http.get(url+filter+token).then(function (res){
+        	$http.get(url+filter+limit+order+token).then(function (res){
         		console.log(res);
         		d.resolve({
         			data: res.data
