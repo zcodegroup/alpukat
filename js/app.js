@@ -13,15 +13,31 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         templateUrl: 'tpl/customer.html'
     })
 
-	.state('customer.grid', {
-	    url: '/customer/grid',
-	    templateUrl: 'tpl/customer.grid.html',
-	})    
+    .state('customer.grid', {
+        url: '/customer/grid',
+        templateUrl: 'tpl/customer.grid.html',
+    })
 
-	.state('customer.map', {
-	    url: '/customer/map',
-	    templateUrl: 'tpl/customer.map.html'
-	})
+    .state('customer.map', {
+        url: '/customer/map',
+        templateUrl: 'tpl/customer.map.html'
+    })
+
+    .state('gardu', {
+        url: '/gardu',
+        abstract: true,
+        templateUrl: 'tpl/gardu.html'
+    })
+
+    .state('gardu.grid', {
+        url: '/gardu/grid',
+        templateUrl: 'tpl/gardu.grid.html',
+    })
+
+    .state('gardu.map', {
+        url: '/gardu/map',
+        templateUrl: 'tpl/gardu.map.html'
+    })
 
     .state('test', {
         url: '/test',
@@ -47,7 +63,7 @@ app.config(function($mdIconProvider) {
 
 app.controller('AppCtrl', function($scope, $state) {
     $scope.share = {};
-    $scope.gohome = function (){
+    $scope.gohome = function() {
         $scope.share.subtitle = null;
         $state.go('home');
     }
