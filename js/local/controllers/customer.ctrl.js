@@ -145,8 +145,18 @@ app.filter('customerFilter', function(CustomerSvc) {
 });
 
 function MapDialogController($scope, $mdDialog, param) {
-    $scope.customer = angular.copy(param.customer);
     $scope.customers = param.customers;
+    $scope.centermap = [];
+    var la = 0; 
+    var lo = 0;
+    for(var i in $scope.customers){
+    	var x = $scope.customers[i];
+    	la += x.latitude*1;
+    	lo += x.longitude*1;
+    }
+    $scope.centermap.push(la/$scope.customers.length);
+    $scope.centermap.push(lo/$scope.customers.length);
+
     $scope.close = function() {
         $mdDialog.cancel();
         // $mdDialog.hide('answer');
