@@ -1,0 +1,42 @@
+<div layout="column" layout-margin ng-controller="InspectCtrl" class="center">
+    <div layout="row">
+        <h2>Daftar Hasil Pemeriksaan</h2>
+        <span flex></span>
+        <form ng-submit="tableParams.reload()" layout="row">
+            <md-input-container md-icon-float>
+                <md-icon md-svg-src="img/icons/ic_search_24px.svg"></md-icon>
+                <input ng-model="query" type="search">
+            </md-input-container>
+            
+        </form>
+    </div>
+    <table ng-table="tableParams" class="table bordered highlight" template-pagination="custom/pager">
+        <thead>
+            <tr>
+                <th>Tanggal</th>
+                <th>No Meter</th>
+                <th>Hasil</th>
+                <th>kWh</th>
+                <th>Jenis</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="m in $data">
+                <td>{{m.date|date:'dd/MM/yyyy HH:mm'}}</td>
+                <td>{{m.meterno}}</td>
+                <td>{{m.result}}</td>
+                <td>{{m.kwh}}</td>
+                <td>{{getType(m.type)}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <script type="text/ng-template" id="custom/pager">
+        <div layout="row" class="center center-text ng-cloak">
+            <!--<pre>{{pages|json}}</pre>-->
+            <small ng-repeat="page in pages" ng-class="{'disabled': !page.active, 'previous': page.type == 'prev', 'next': page.type == 'next'}" ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type" style="margin-right:30px">
+        	    <a ng-switch-when="prev" ng-click="params.page(page.number)" href="">&laquo; Prev</a>
+        	    <a ng-switch-when="next" ng-click="params.page(page.number)" href="">Next &raquo;</a>
+        	</small>
+        </div>
+    </script>
+</div>

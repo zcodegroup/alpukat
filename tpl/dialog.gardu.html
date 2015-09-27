@@ -1,0 +1,57 @@
+<md-dialog aria-label="Detail Gardu">
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Detail Gardu</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="close()">
+                    <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div layout layout-sm="column">
+                <md-input-container flex>
+                    <label>Gardu</label>
+                    <input ng-model="gardu.gardu" type="text" disabled>
+                </md-input-container>
+            </div>
+            <div layout layout-sm="column">
+                <md-input-container flex>
+                    <label>No Meter</label>
+                    <input ng-model="gardu.meterno" type="text" disabled>
+                </md-input-container>
+                <md-input-container flex>
+                    <label>Penyulang</label>
+                    <input ng-model="gardu.penyulang" type="text" disabled>
+                </md-input-container>
+            </div>
+            <div layout layout-sm="column">
+                <md-input-container flex>
+                    <label>Kapasitas Trafo</label>
+                    <input ng-model="gardu.trafoCapacity" type="text" disabled>
+                </md-input-container>
+                <md-input-container flex>
+                    <label>CT Terpasang</label>
+                    <input ng-model="gardu.ctTerpasang" type="text" disabled>
+                </md-input-container>
+            </div>
+            <div layout layout-sm="column">
+                <md-input-container flex>
+                    <label>Latitude</label>
+                    <input ng-model="gardu.latitude" type="text" disabled>
+                </md-input-container>
+                <md-input-container flex>
+                    <label>Longitude</label>
+                    <input ng-model="gardu.longitude" type="text" disabled>
+                </md-input-container>
+            </div>
+        </md-dialog-content>
+        <div class="md-actions" layout="row">
+            <span flex></span>
+            <md-button ng-click="close()" class="md-primary">
+                Tutup
+            </md-button>
+        </div>
+    </form>
+</md-dialog>

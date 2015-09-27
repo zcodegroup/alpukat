@@ -1,0 +1,29 @@
+<md-dialog aria-label="Pemeriksaan Pelanggan">
+	<md-toolbar>
+	    <div class="md-toolbar-tools">
+	        <h2>Pemeriksaan Pelanggan {{customer.name}}</h2>
+	        <span flex></span>
+	        <md-button class="md-icon-button" ng-click="close()">
+	            <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+	        </md-button>
+	    </div>
+	</md-toolbar>
+	<md-dialog-content style="height:350px;width:600px">
+		<md-list>
+		    <md-list-item class="md-2-line" ng-repeat="item in inspects">
+		        <div class="md-list-item-text">
+		            <h3>{{item.result}}</h3>
+		            <p>{{item.date|date:'dd MMMM yyyy'}}</p>
+		        </div>
+		        <h4>{{item.kwh}} kWh</h4>
+		    </md-list-item>
+		</md-list>
+		<span ng-hide="inspects.length > 0"><i>Tidak ada data hasil pemeriksaan</i></span>
+	</md-dialog-content>
+	<div class="md-actions" layout="row">
+	    <span flex></span>
+	    <md-button ng-click="close()" class="md-primary">
+	        Tutup
+	    </md-button>
+	</div>
+</md-dialog>

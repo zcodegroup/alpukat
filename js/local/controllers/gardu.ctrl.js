@@ -1,7 +1,9 @@
-app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTableParams, CustomerSvc, _) {
+app.controller('GarduCtrl', function($scope, $state, $mdDialog, $sce, ngTableParams, GarduSvc, _) {
     $scope.query = "";
+    $scope.share.subtitle = "Gardu";
+    $scope.share.ref = "gardu";
     $scope.state = $state;
-    $scope.selectedCustomers = [];
+    $scope.selectedGardus = [];
     $scope.rowsizes = [5, 10, 20];
 
     $scope.map = {
@@ -14,14 +16,14 @@ app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTable
 
     $scope.query = "";
     var selectall = false;
-    $scope.xyz = function() {
-        selectall = !selectall;
-        for (var i in $scope.tableParams.data) {
-            var x = $scope.tableParams.data[i];
-            x.selected = selectall;
-        }
+    $scope.xyz = function (){
+    	selectall = !selectall;
+    	for (var i in $scope.tableParams.data) {
+    	    var x = $scope.tableParams.data[i];
+    	    x.selected = selectall;
+    	}
     }
-
+    
 
     $scope.search = function() {
         $scope.tableParams.reload()
@@ -35,33 +37,33 @@ app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTable
         return $sce.trustAsHtml(text.replace(new RegExp(search, 'gi'), '<span class="highlightedText">$&</span>'));
     };
 
-    $scope.select = function(customer) {
-        $scope.customer = customer;
-        if ($scope.state.current.name === "customer.map")
-            $scope.selectedCustomers.push(customer);
-        if ($scope.state.current.name === "customer.grid")
-            $scope.customers.map(function(c) {
-                if (c.idpel !== customer.idpel) {
+    $scope.select = function(gardu) {
+        $scope.gardu = gardu;
+        if ($scope.state.current.name === "gardu.map")
+            $scope.selectedGardus.push(gardu);
+        if ($scope.state.current.name === "gardu.grid")
+            $scope.gardus.map(function(c) {
+                if (c.idpel !== gardu.idpel) {
                     c.selected = false;
                 }
             });
     }
 
-    $scope.customerDetail = function(ev) {
-        var customers = [];
-        for (var i in $scope.tableParams.data) {
-            var x = $scope.tableParams.data[i];
-            if (x.selected) customers.push(x);
-        }
+    $scope.garduDetail = function(ev) {
+    	var gardus = [];
+    	for (var i in $scope.tableParams.data) {
+    	    var x = $scope.tableParams.data[i];
+    	    if (x.selected) gardus.push(x);
+    	}
         $mdDialog.show({
                 controller: DialogController,
-                templateUrl: 'tpl/customer.dialog.html',
+                templateUrl: 'tpl/gardu.dialog.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
                 resolve: {
                     param: function() {
                         return {
-                            customers: customers
+                        	gardus: gardus
                         };
                     }
                 }
@@ -73,16 +75,16 @@ app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTable
             });
     }
 
-    $scope.inspectDetail = function(customer, ev) {
+    $scope.inspectDetail = function(gardu, ev) {
         $mdDialog.show({
-            controller: CustomerInspectController,
-            templateUrl: 'tpl/customer.inspect.dialog.html',
+            controller: GarduInspectController,
+            templateUrl: 'tpl/gardu.inspect.dialog.html',
             parent: angular.element(document.body),
             targetEvent: ev,
             resolve: {
                 param: function() {
                     return {
-                        customer: customer
+                        gardu: gardu
                     };
                 }
             }
@@ -98,12 +100,11 @@ app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTable
     }, {
         total: 0, // length of data
         getData: function($defer, params) {
-            CustomerSvc.count().then(function(n) {
+            GarduSvc.count().then(function(n) {
                 params.total(n.data.count);
                 var limit = params.count();
                 var offset = (params.page() - 1) * limit;
-                CustomerSvc.search($scope.query, offset, limit).then(function(res) {
-                    console.log('result', res.data)
+                GarduSvc.search($scope.query, offset, limit).then(function(res) {
                     $defer.resolve(res.data);
                     // $defer.resolve(filtered.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                 });
@@ -127,10 +128,10 @@ app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTable
 
 });
 
-app.filter('customerFilter', function(CustomerSvc) {
+app.filter('garduFilter', function(GarduSvc) {
     return function(items, props) {
         if (!angular.isArray(items)) return items;
-        CustomerSvc.search(props).then(function(res) {
+        GarduSvc.search(props).then(function(res) {
             return res.data;
         }, function() {
             return items;
@@ -139,21 +140,22 @@ app.filter('customerFilter', function(CustomerSvc) {
 });
 
 function DialogController($scope, $mdDialog, param) {
-    $scope.customer = angular.copy(param.customer);
-    $scope.customers = param.customers;
+    $scope.gardu = angular.copy(param.gardu);
+    $scope.gardus = param.gardus;
     $scope.close = function() {
         $mdDialog.cancel();
         // $mdDialog.hide('answer');
     };
 }
 
-function CustomerInspectController($scope, $mdDialog, InspectSvc, param) {
-	InspectSvc.searchByMeterno(param.customer.meterno).then(function (res){
-		console.log(res.data);
-		$scope.inspects = res.data;
-	})
-    $scope.customer = angular.copy(param.customer);
-    $scope.close = function() {
-        $mdDialog.cancel();
-    };
+
+function GarduInspectController($scope, $mdDialog, InspectSvc, param){
+		InspectSvc.searchByMeterno(param.gardu.meterno).then(function (res){
+			console.log(res.data);
+			$scope.inspects = res.data;
+		})
+	    $scope.gardu = angular.copy(param.gardu);
+	    $scope.close = function() {
+	        $mdDialog.cancel();
+	    };	
 }

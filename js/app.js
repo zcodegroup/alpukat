@@ -1,4 +1,4 @@
-var app = angular.module("alpukat", ['ngMaterial', 'ui.router', 'ngMap', 'underscore', 'angular-loading-bar']);
+var app = angular.module("alpukat", ['ngMaterial', 'ui.router', 'ngMap', 'ngTable', 'underscore', 'angular-loading-bar']);
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
     $stateProvider
@@ -37,6 +37,11 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
     .state('gardu.map', {
         url: '/gardu/map',
         templateUrl: 'tpl/gardu.map.html'
+    })
+
+    .state('inspect', {
+    	url: '/inspect',
+    	templateUrl: 'tpl/inspect.html'
     })
 
     .state('test', {

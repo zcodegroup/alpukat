@@ -12,6 +12,20 @@
     background: yellow;
 }
 
+.center {
+    margin: auto;
+    width: 90%;
+    padding: 10px;
+}
+
+.center-text{
+	justify-content: center;
+}
+
+.table{
+	/*font-size: small;*/
+}
+
 
 /*
 md-toolbar.my-toolbar {

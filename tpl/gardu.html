@@ -1,10 +1,14 @@
-<div layout="column" layout-margin ng-controller="CustomerCtrl" class="center">
+<div layout="column" layout-margin ng-controller="GarduCtrl" class="center">
     <div layout="row">
-        <h2>Daftar Pelanggan</h2>
+        <h2>Daftar Gardu</h2>
         <span flex></span>
         <form ng-submit="tableParams.reload()" layout="row">
+            <!-- <md-input-container flex>
+                <label>First name</label>
+                <input ng-model="user.firstName">
+            </md-input-container> -->
             <md-input-container>
-            	<md-button ng-click="customerDetail($event)"> Lihat Peta </md-button>
+            	<md-button ng-click="garduDetail($event)"> Lihat Peta </md-button>
             </md-input-container>
             <md-input-container md-icon-float>
                 <md-icon md-svg-src="img/icons/ic_search_24px.svg"></md-icon>
@@ -19,14 +23,11 @@
                 <th>
                     <md-checkbox ng-click="xyz()"></md-checkbox>
                 </th>
-                <th>Idpel</th>
-                <th>Name</th>
-                <th>No Meter</th>
-                <th>Alamat</th>
-                <th>Tarif</th>
-                <th>Daya</th>
                 <th>Gardu</th>
-                <th>Tiang</th>
+                <th>No Meter</th>
+                <th>Kapasitas Trafo (kVA)</th>
+                <th>CT Terpasang</th>
+                <th>Penyulang</th>
                 <th>Lokasi</th>
                 <th>Pemeriksaan</th>
             </tr>
@@ -36,14 +37,11 @@
                 <td>
                     <md-checkbox ng-click="m.selected = !m.selected" ng-model="m.selected"></md-checkbox>
                 </td>
-                <td>{{m.idpel}}</td>
-                <td>{{m.name}}</td>
-                <td>{{m.meterno}}</td>
-                <td>{{m.address}}</td>
-                <td>{{m.tarif}}</td>
-                <td>{{m.daya}}</td>
                 <td>{{m.gardu}}</td>
-                <td>{{m.tiang}}</td>
+                <td>{{m.meterno}}</td>
+                <td>{{m.trafoCapacity}}</td>
+                <td>{{m.ctTerpasang}}</td>
+                <td>{{m.penyulang}}</td>
                 <td>{{m.latitude}} {{m.latitude}}</td>
                 <td>
                 	<md-button ng-click="inspectDetail(m, $event)">
@@ -51,6 +49,9 @@
                 	</md-button>
                 </td>
             </tr>
+            <!-- <tr>
+            	<td><pre>{{$data|json}}</pre></td>
+            </tr> -->
         </tbody>
     </table>
     <script type="text/ng-template" id="custom/pager">
