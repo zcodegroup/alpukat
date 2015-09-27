@@ -9,7 +9,7 @@
 	    </div>
 	</md-toolbar>
 	<md-dialog-content style="height:350px;width:600px">
-		<map zoom="12" center="{{centermap}}" on-center-changed="centerChanged()">
+		<map zoom="9" center="{{centermap}}" on-center-changed="centerChanged()">
 		    <marker fit="true" ng-repeat="c in customers" position="{{c.latitude}}, {{c.longitude}}" title="{{c.customer}} ({{c.meterno}})"></marker>
 		</map>
 	</md-dialog-content>
