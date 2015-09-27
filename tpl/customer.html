@@ -44,7 +44,7 @@
                 <td>{{m.daya}}</td>
                 <td>{{m.gardu}}</td>
                 <td>{{m.tiang}}</td>
-                <td>{{m.latitude}} {{m.latitude}}</td>
+                <td>{{getLocation(m.latitude, m.longitude)}}</td>
                 <td>
                 	<md-button ng-click="inspectDetail(m, $event)">
                 		<md-icon md-menu-align-target md-svg-icon="social:person"></md-icon>

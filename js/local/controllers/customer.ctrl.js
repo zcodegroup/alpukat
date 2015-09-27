@@ -27,6 +27,12 @@ app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTable
         $scope.tableParams.reload()
     }
 
+    $scope.getLocation = function (lat, lon){
+    	if (lat === "" || lon === "")
+    		return "";
+    	else return lat + ", " + lon;
+    }
+
     $scope.highlight = function(text) {
         var search = $scope.query;
         if (!search) {
@@ -54,7 +60,7 @@ app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTable
             if (x.selected) customers.push(x);
         }
         $mdDialog.show({
-                controller: DialogController,
+                controller: MapDialogController,
                 templateUrl: 'tpl/customer.dialog.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
@@ -138,7 +144,7 @@ app.filter('customerFilter', function(CustomerSvc) {
     }
 });
 
-function DialogController($scope, $mdDialog, param) {
+function MapDialogController($scope, $mdDialog, param) {
     $scope.customer = angular.copy(param.customer);
     $scope.customers = param.customers;
     $scope.close = function() {
