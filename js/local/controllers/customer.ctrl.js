@@ -9,7 +9,7 @@ app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTable
             latitude: 45,
             longitude: -73
         },
-        zoom: 8
+        zoom: 13
     };
 
     $scope.query = "";
@@ -27,10 +27,10 @@ app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTable
         $scope.tableParams.reload()
     }
 
-    $scope.getLocation = function (lat, lon){
-    	if (lat === "" || lon === "")
-    		return "";
-    	else return lat + ", " + lon;
+    $scope.getLocation = function(lat, lon) {
+        if (lat === "" || lon === "")
+            return "";
+        else return lat + ", " + lon;
     }
 
     $scope.highlight = function(text) {
@@ -133,29 +133,29 @@ app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTable
 
 });
 
-app.filter('customerFilter', function(CustomerSvc) {
-    return function(items, props) {
-        if (!angular.isArray(items)) return items;
-        CustomerSvc.search(props).then(function(res) {
-            return res.data;
-        }, function() {
-            return items;
-        });
-    }
-});
-
 function MapDialogController($scope, $mdDialog, param) {
     $scope.customers = param.customers;
-    $scope.centermap = [];
-    var la = 0; 
-    var lo = 0;
-    for(var i in $scope.customers){
-    	var x = $scope.customers[i];
-    	la += x.latitude*1;
-    	lo += x.longitude*1;
-    }
-    $scope.centermap.push(la/$scope.customers.length);
-    $scope.centermap.push(lo/$scope.customers.length);
+    $scope.markers = [];
+    var centerX = {};
+    for (var i = $scope.customers.length - 1; i >= 0; i--) {
+        var c = $scope.customers[i];
+    	if (i == $scope.customers.length-1){
+    		centerX.latitude = c.latitude;
+    		centerX.longitude = c.longitude;
+    	}
+        $scope.markers.push({
+            latitude: c.latitude,
+            longitude: c.longitude,
+            title: c.name,
+            id: i
+        });
+    };
+    console.log(centerX)
+    $scope.map = {
+        center: centerX,
+        zoom: 6
+    };
+
 
     $scope.close = function() {
         $mdDialog.cancel();
@@ -164,10 +164,9 @@ function MapDialogController($scope, $mdDialog, param) {
 }
 
 function CustomerInspectController($scope, $mdDialog, InspectSvc, param) {
-	InspectSvc.searchByMeterno(param.customer.meterno).then(function (res){
-		console.log(res.data);
-		$scope.inspects = res.data;
-	})
+    InspectSvc.searchByMeterno(param.customer.meterno).then(function(res) {
+        $scope.inspects = res.data;
+    })
     $scope.customer = angular.copy(param.customer);
     $scope.close = function() {
         $mdDialog.cancel();

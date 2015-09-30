@@ -2,14 +2,10 @@
     <div layout="row">
         <h2>Daftar Gardu</h2>
         <span flex></span>
+        <md-input-container>
+        	<md-button ng-click="garduDetail($event)"> Lihat Peta </md-button>
+        </md-input-container>
         <form ng-submit="tableParams.reload()" layout="row">
-            <!-- <md-input-container flex>
-                <label>First name</label>
-                <input ng-model="user.firstName">
-            </md-input-container> -->
-            <md-input-container>
-            	<md-button ng-click="garduDetail($event)"> Lihat Peta </md-button>
-            </md-input-container>
             <md-input-container md-icon-float>
                 <md-icon md-svg-src="img/icons/ic_search_24px.svg"></md-icon>
                 <input ng-model="query" type="search">

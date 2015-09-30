@@ -56,7 +56,7 @@ app.controller('GarduCtrl', function($scope, $state, $mdDialog, $sce, ngTablePar
     	    if (x.selected) gardus.push(x);
     	}
         $mdDialog.show({
-                controller: DialogController,
+                controller: GarduMapController,
                 templateUrl: 'tpl/gardu.dialog.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
@@ -139,9 +139,28 @@ app.filter('garduFilter', function(GarduSvc) {
     }
 });
 
-function DialogController($scope, $mdDialog, param) {
-    $scope.gardu = angular.copy(param.gardu);
+function GarduMapController($scope, $mdDialog, param) {
     $scope.gardus = param.gardus;
+    $scope.markers = [];
+    var centerX = {};
+    for (var i = $scope.gardus.length - 1; i >= 0; i--) {
+        var c = $scope.gardus[i];
+    	if (i == $scope.gardus.length-1){
+    		centerX.latitude = c.latitude;
+    		centerX.longitude = c.longitude;
+    	}
+        $scope.markers.push({
+            latitude: c.latitude,
+            longitude: c.longitude,
+            title: c.name,
+            id: i
+        });
+    };
+    console.log(centerX)
+    $scope.map = {
+        center: centerX,
+        zoom: 6
+    };
     $scope.close = function() {
         $mdDialog.cancel();
         // $mdDialog.hide('answer');

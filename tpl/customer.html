@@ -2,10 +2,10 @@
     <div layout="row">
         <h2>Daftar Pelanggan</h2>
         <span flex></span>
+        <md-input-container>
+        	<md-button ng-click="customerDetail($event)"> Lihat Peta </md-button>
+        </md-input-container>
         <form ng-submit="tableParams.reload()" layout="row">
-            <md-input-container>
-            	<md-button ng-click="customerDetail($event)"> Lihat Peta </md-button>
-            </md-input-container>
             <md-input-container md-icon-float>
                 <md-icon md-svg-src="img/icons/ic_search_24px.svg"></md-icon>
                 <input ng-model="query" type="search">

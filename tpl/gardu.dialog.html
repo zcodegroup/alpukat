@@ -8,11 +8,11 @@
 	        </md-button>
 	    </div>
 	</md-toolbar>
-	<md-dialog-content style="height:350px;width:600px">
-		<map zoom="9" center="-2.8994298, 107.9140491" on-center-changed="centerChanged()">
-		    <marker ng-repeat="c in gardus" position="{{c.latitude}}, {{c.longitude}}" title="{{c.gardu}} ({{c.meterno}})"></marker>
-		</map>
-	</md-dialog-content>
+	<md-dialog-content style="height:700px;width:700px">
+        <ui-gmap-google-map center="map.center" zoom="map.zoom">
+            <ui-gmap-markers models="markers" coords="'self'" icon="'icon'" fit="true" options="mapoptions"></ui-gmap-markers>
+        </ui-gmap-google-map>
+    </md-dialog-content>
 	<div class="md-actions" layout="row">
 	    <span flex></span>
 	    <md-button ng-click="close()" class="md-primary">
