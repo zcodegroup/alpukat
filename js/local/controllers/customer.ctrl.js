@@ -95,6 +95,8 @@ app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTable
         });
     }
 
+    $scope.customerNumber = 0;
+
     $scope.tableParams = new ngTableParams({
         page: 1, // show first page
         count: 5, // count per page
@@ -105,6 +107,7 @@ app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTable
         total: 0, // length of data
         getData: function($defer, params) {
             CustomerSvc.count().then(function(n) {
+            	$scope.customerNumber = n.data.count;
                 params.total(n.data.count);
                 var limit = params.count();
                 var offset = (params.page() - 1) * limit;

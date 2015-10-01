@@ -2,6 +2,10 @@
     height: 400px;
 }
 
+#loading-bar .bar {
+    background: #FBC900;
+}
+
 .md-toolbar-tools h1 {
     font-size: inherit;
     font-weight: inherit;
@@ -18,12 +22,12 @@
     padding: 10px;
 }
 
-.center-text{
-	justify-content: center;
+.center-text {
+    justify-content: center;
 }
 
-.table{
-	/*font-size: small;*/
+.table {
+    /*font-size: small;*/
 }
 
 

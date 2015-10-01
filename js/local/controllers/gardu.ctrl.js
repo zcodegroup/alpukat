@@ -91,6 +91,8 @@ app.controller('GarduCtrl', function($scope, $state, $mdDialog, $sce, ngTablePar
         });
     }
 
+    $scope.garduNumber = 0;
+
     $scope.tableParams = new ngTableParams({
         page: 1, // show first page
         count: 5, // count per page
@@ -101,6 +103,7 @@ app.controller('GarduCtrl', function($scope, $state, $mdDialog, $sce, ngTablePar
         total: 0, // length of data
         getData: function($defer, params) {
             GarduSvc.count().then(function(n) {
+            	$scope.garduNumber = n.data.count;
                 params.total(n.data.count);
                 var limit = params.count();
                 var offset = (params.page() - 1) * limit;
