@@ -21,19 +21,19 @@
                 <a href="">{{share.subtitle}}</a>
               </h2> -->
                 <span flex></span>
-                <md-button ng-click="gohome()">
+                <md-button ng-click="gohome()" ng-class="share.menu == 'home' ? 'md-accent' : ''">
                     <md-icon md-menu-align-target md-svg-icon="device:dvr"></md-icon>
                     Home
                 </md-button>
-                <md-button ui-sref="customer.grid">
+                <md-button ui-sref="customer.grid" ng-class="share.menu == 'customer' ? 'md-accent' : ''">
                     <md-icon md-menu-align-target md-svg-icon="social:person"></md-icon>
                     Pelanggan
                 </md-button>
-                <md-button ui-sref="gardu.grid">
+                <md-button ui-sref="gardu.grid" ng-class="share.menu == 'gardu' ? 'md-accent' : ''">
                     <md-icon md-menu-align-target md-svg-icon="device:wifi-tethering"></md-icon>
                     Gardu
                 </md-button>
-                <md-button ui-sref="inspect">
+                <md-button ui-sref="inspect" ng-class="share.menu == 'inspect' ? 'md-accent' : ''">
                     <md-icon md-menu-align-target md-svg-icon="device:gps-fixed"></md-icon>
                     Pemeriksaan
                 </md-button>

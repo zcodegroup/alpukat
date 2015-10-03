@@ -1,4 +1,5 @@
 app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTableParams, CustomerSvc, _) {
+    $scope.share.menu = 'customer';
     $scope.query = "";
     $scope.state = $state;
     $scope.selectedCustomers = [];

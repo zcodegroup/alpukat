@@ -81,6 +81,10 @@ app.controller('AppCtrl', function($scope, $state) {
     }
 });
 
+app.controller('HomeCtrl', function($scope, $state) {
+    $scope.share.menu = 'home';
+});
+
 app.filter('propsFilter', function() {
     return function(items, props) {
         var out = [];

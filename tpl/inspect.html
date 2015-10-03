@@ -1,32 +1,65 @@
 <div layout="column" layout-margin ng-controller="InspectCtrl" class="center">
     <div layout="row">
-        <h2>Daftar Hasil Pemeriksaan</h2>
+        <h2>Hasil Pemeriksaan {{type}}</h2>
         <span flex></span>
+        <md-select ng-model="type" ng-change="changeInspect()">
+            <md-option ng-repeat="type in types" value="{{type}}">
+                {{type}}
+            </md-option>
+        </md-select>
         <form ng-submit="tableParams.reload()" layout="row">
-            <md-input-container md-icon-float>
+            <md-input-container md-no-float>
                 <md-icon md-svg-src="img/icons/ic_search_24px.svg"></md-icon>
-                <input ng-model="query" type="search">
+                <input ng-model="query" type="search" placeholder="Cari">
             </md-input-container>
-            
         </form>
     </div>
-    <table ng-table="tableParams" class="table bordered highlight" template-pagination="custom/pager">
+    <table ng-table="tableParams" class="table bordered highlight" 
+    template-pagination="custom/pager">
         <thead>
-            <tr>
+            <tr ng-if="type === 'Pelanggan'">
                 <th>Tanggal</th>
+                <th>IDPEL</th>
                 <th>No Meter</th>
+                <th>Nama</th>
+                <th>Alamat</th>
+                <th>Tarif</th>
+                <th>Daya</th>
                 <th>Hasil</th>
                 <th>kWh</th>
-                <th>Jenis</th>
+            </tr>
+            <tr ng-if="type === 'Gardu'">
+                <th>Tanggal</th>
+                <th>No Meter</th>
+                <th>Gardu</th>
+                <th>Kapasitas Trafo (kVA)</th>
+                <th>Penyulang</th>
+                <th>Hasil</th>
+                <th>kWh</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody ng-if="type === 'Pelanggan'">
+            <tr ng-repeat="m in $data">
+                <td>{{m.date|date:'dd/MM/yyyy HH:mm'}}</td>
+                <td>{{m.customer.idpel}}</td>
+                <td>{{m.meterno}}</td>
+                <td>{{m.customer.name}}</td>
+                <td>{{m.customer.address}}</td>
+                <td>{{m.customer.tarif}}</td>
+                <td>{{m.customer.daya}}</td>
+                <td>{{m.result}}</td>
+                <td>{{m.kwh}}</td>
+            </tr>
+        </tbody>
+        <tbody ng-if="type === 'Gardu'">
             <tr ng-repeat="m in $data">
                 <td>{{m.date|date:'dd/MM/yyyy HH:mm'}}</td>
                 <td>{{m.meterno}}</td>
+                <td>{{m.gardu.gardu}}</td>
+                <td>{{m.gardu.trafoCapacity}}</td>
+                <td>{{m.gardu.penyulang}}</td>
                 <td>{{m.result}}</td>
                 <td>{{m.kwh}}</td>
-                <td>{{getType(m.type)}}</td>
             </tr>
         </tbody>
     </table>

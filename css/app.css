@@ -25,15 +25,9 @@
 .center-text {
     justify-content: center;
 }
-
-.table {
-    /*font-size: small;*/
+.md-accent{
+	color: #F5DA00 !important;
 }
-
-
-/*
-md-toolbar.my-toolbar {
-    color: white;
-    background-color: #558B2F;
+.md-accent md-icon{
+	color: #F5DA00 !important;
 }
-*/

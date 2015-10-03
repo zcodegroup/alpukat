@@ -6,9 +6,9 @@
         	<md-button ng-click="customerDetail($event)"> Lihat Peta </md-button>
         </md-input-container>
         <form ng-submit="tableParams.reload()" layout="row">
-            <md-input-container md-icon-float>
+            <md-input-container md-no-float>
                 <md-icon md-svg-src="img/icons/ic_search_24px.svg"></md-icon>
-                <input ng-model="query" type="search">
+                <input ng-model="query" type="search" placeholder="Cari">
             </md-input-container>
             
         </form>

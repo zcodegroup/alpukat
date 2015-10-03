@@ -10,7 +10,6 @@ app.factory('CustomerSvc', function($http, $q, _) {
         	var token = "access_token=MWob5MXT64yRBImh07tN7hEZEF3W2brt82n1UXDQXmIJZV6av06RACA6PVS7EscJ";
         	console.log(url+filter+offs+limit+order+token);
         	$http.get(url+filter+offs+limit+order+token).then(function (res){
-        		console.log(res);
         		d.resolve({
         			data: res.data
         		})

@@ -1,10 +1,13 @@
 app.controller('InspectCtrl', function($scope, $state, $mdDialog, $sce, ngTableParams, InspectSvc) {
+	$scope.share.menu = 'inspect';
     $scope.query = "";
     $scope.share.subtitle = "Inspect";
     $scope.share.ref = "inspect";
     $scope.state = $state;
     $scope.selectedInspects = [];
     $scope.rowsizes = [5, 10, 20];
+    $scope.types = ["Pelanggan", "Gardu"];
+    $scope.type = $scope.types[0];
 
     $scope.query = "";
     var selectall = false;
@@ -21,8 +24,8 @@ app.controller('InspectCtrl', function($scope, $state, $mdDialog, $sce, ngTableP
         $scope.tableParams.reload()
     }
 
-    $scope.getType = function (n){
-    	return n == 0 ? "Gardu" : "Pelanggan";	
+    $scope.getType = function(n) {
+        return n == 0 ? "Gardu" : "Pelanggan";
     }
 
     $scope.highlight = function(text) {
@@ -32,6 +35,10 @@ app.controller('InspectCtrl', function($scope, $state, $mdDialog, $sce, ngTableP
         }
         return $sce.trustAsHtml(text.replace(new RegExp(search, 'gi'), '<span class="highlightedText">$&</span>'));
     };
+
+    $scope.changeInspect = function(){
+    	$scope.tableParams.reload();
+    }
 
     $scope.tableParams = new ngTableParams({
         page: 1, // show first page
@@ -46,9 +53,9 @@ app.controller('InspectCtrl', function($scope, $state, $mdDialog, $sce, ngTableP
                 params.total(n.data.count);
                 var limit = params.count();
                 var offset = (params.page() - 1) * limit;
-                InspectSvc.search($scope.query, offset, limit).then(function(res) {
+                var type = $scope.type === "Pelanggan" ? 1 : 0;
+                InspectSvc.search($scope.query, offset, limit, type).then(function(res) {
                     $defer.resolve(res.data);
-                    // $defer.resolve(filtered.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                 });
             });
         }

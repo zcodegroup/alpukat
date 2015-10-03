@@ -1,7 +1,6 @@
 app.controller('GarduCtrl', function($scope, $state, $mdDialog, $sce, ngTableParams, GarduSvc, _) {
+    $scope.share.menu = 'gardu';
     $scope.query = "";
-    $scope.share.subtitle = "Gardu";
-    $scope.share.ref = "gardu";
     $scope.state = $state;
     $scope.selectedGardus = [];
     $scope.rowsizes = [5, 10, 20];
