@@ -4,6 +4,27 @@ app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTable
     $scope.state = $state;
     $scope.selectedCustomers = [];
     $scope.rowsizes = [5, 10, 20];
+    $scope.customers = [];
+    $scope.headers = ["IDPEL", "Nama", "No Meter", "Alamat", "Tarif", "Daya", "Gardu", "Tiang", "Latitude", "Longitude"];
+
+    CustomerSvc.getAll().then(function (res){
+    	for(var i in res.data){
+    		var o = res.data[i];
+    		var x = {
+    			idpel: o.idpel,
+    			name: o.name,
+    			meterno: o.meterno,
+    			address: o.address,
+    			tarif: o.tarif,
+    			daya: o.daya,
+    			gardu: o.gardu,
+    			tiang: o.tiang,
+    			latitude: o.latitude,
+    			longitude: o.longitude
+    		}
+    		$scope.customers.push(x);
+    	}
+    })
 
     $scope.map = {
         center: {

@@ -14,6 +14,16 @@ app.factory('InspectSvc', function($http, $q, _) {
             return $http.get(url + filter + filter2 + offs + gardu + customer + limit + order + token);
         },
 
+        getAll: function(type) {
+            var url = baseUrl + "AlpukatInspect?";
+            var filter = "filter[where][type]=" + type + "&";
+            var gardu = "filter[include]=gardu&";
+            var customer = "filter[include]=customer&";
+            var order = "filter[order]=datetime%20DESC&&";
+            var token = "access_token=MWob5MXT64yRBImh07tN7hEZEF3W2brt82n1UXDQXmIJZV6av06RACA6PVS7EscJ";
+            return $http.get(url + filter + gardu + customer + order + token);
+        },
+
         count: function() {
             var url = baseUrl + "AlpukatInspect/count?";
             var token = "access_token=MWob5MXT64yRBImh07tN7hEZEF3W2brt82n1UXDQXmIJZV6av06RACA6PVS7EscJ";

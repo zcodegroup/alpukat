@@ -4,6 +4,25 @@ app.controller('GarduCtrl', function($scope, $state, $mdDialog, $sce, ngTablePar
     $scope.state = $state;
     $scope.selectedGardus = [];
     $scope.rowsizes = [5, 10, 20];
+    $scope.headers = ["Gardu", "No Meter", "Kapasitas Trafo (kVA)", "CT Terpasang", "Penyulang", "Latitude", "Longitude"];
+    $scope.gardus = [];
+
+
+    GarduSvc.getAll().then(function (res){
+    	for (var i in res.data){
+    		var o = res.data[i];
+    		var x = {
+    			gardu: o.gardu,
+    			meterno: o.meterno,
+    			trafoCapacity: o.trafoCapacity,
+    			ctTerpasang: o.ctTerpasang,
+    			penyulang: o.penyulang,
+    			latitude: o.latitude,
+    			longitude: o.longitude
+    		}
+    		$scope.gardus.push(x);
+    	}
+    })
 
     $scope.map = {
         center: {

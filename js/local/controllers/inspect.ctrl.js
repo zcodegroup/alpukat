@@ -1,4 +1,4 @@
-app.controller('InspectCtrl', function($scope, $state, $mdDialog, $sce, ngTableParams, InspectSvc) {
+app.controller('InspectCtrl', function($scope, $state, $filter, $mdDialog, $sce, ngTableParams, InspectSvc) {
 	$scope.share.menu = 'inspect';
     $scope.query = "";
     $scope.share.subtitle = "Inspect";
@@ -8,6 +8,10 @@ app.controller('InspectCtrl', function($scope, $state, $mdDialog, $sce, ngTableP
     $scope.rowsizes = [5, 10, 20];
     $scope.types = ["Pelanggan", "Gardu"];
     $scope.type = $scope.types[0];
+    $scope.ntype = $scope.types[1];
+    $scope.isCustomer = true;
+    $scope.inspectCustomers = [];
+    $scope.inspectGardus = [];
 
     $scope.query = "";
     var selectall = false;
@@ -37,6 +41,9 @@ app.controller('InspectCtrl', function($scope, $state, $mdDialog, $sce, ngTableP
     };
 
     $scope.changeInspect = function(){
+    	$scope.isCustomer = !$scope.isCustomer;
+    	$scope.type = $scope.isCustomer ? "Pelanggan" : "Gardu";
+    	$scope.ntype = $scope.isCustomer ? "Gardu" : "Pelanggan";
     	$scope.tableParams.reload();
     }
 
@@ -59,5 +66,60 @@ app.controller('InspectCtrl', function($scope, $state, $mdDialog, $sce, ngTableP
                 });
             });
         }
+    });
+
+    $scope.getHeaders = function (){
+		if ($scope.type == "Pelanggan")
+			return ["Tanggal", "IDPEL", "No Meter", "Nama", "Alamat", "Tarif", "Daya", "Hasil Pemeriksaan", "kWh"];
+		else
+			return ["Tanggal", "No Meter", "Gardu", "Kapasitas Trafo (kVA)", "Penyulang", "Hasil Pemeriksaan", "kWh"];
+    }
+
+    $scope.getData = function (){
+    	if ($scope.type == "Pelanggan")
+    		return $scope.inspectCustomers;
+    	else
+    		return $scope.inspectGardus;
+    }
+
+    $scope.getFileName = function (){
+    	return $scope.type === "Pelanggan" ? "pemeriksaan-pelanggan.csv" 
+    		: "pemeriksaan-gardu.csv";
+    }
+
+    InspectSvc.getAll(1).then(function (res){
+    	for (var i in res.data){
+    		var o = res.data[i];
+    		var x = {
+    			date: $filter('date')(o.date, 'MM/dd/yyyy HH:mm'),
+    			idpel: o.customer.idpel,
+    			meterno: o.customer.meterno,
+    			name: o.customer.name,
+    			address: o.customer.address,
+    			tarif: o.customer.tarif,
+    			daya: o.customer.daya,
+    			result: o.result,
+    			kwh: o.kwh
+    			// date: $filter('date')(date, format, timezone)
+    		}
+    		$scope.inspectCustomers.push(x);
+    	}
+    });
+
+    InspectSvc.getAll(0).then(function (res){
+    	for (var i in res.data){
+    		var o = res.data[i];
+    		var x = {
+    			date: $filter('date')(o.date, 'MM/dd/yyyy HH:mm'),
+    			meterno: o.gardu.meterno,
+    			name: o.gardu.gardu,
+    			trafoCapacity: o.gardu.trafoCapacity,
+    			penyulang: o.gardu.penyulang,
+    			result: o.result,
+    			kwh: o.kwh
+    			// date: $filter('date')(date, format, timezone)
+    		}
+    		$scope.inspectGardus.push(x);
+    	}
     });
 });

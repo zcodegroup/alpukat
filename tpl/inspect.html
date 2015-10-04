@@ -2,11 +2,15 @@
     <div layout="row">
         <h2>Hasil Pemeriksaan {{type}}</h2>
         <span flex></span>
-        <md-select ng-model="type" ng-change="changeInspect()">
-            <md-option ng-repeat="type in types" value="{{type}}">
-                {{type}}
-            </md-option>
-        </md-select>
+        <md-input-container layout="row">
+        	<md-button ng-csv="getData()" csv-header="getHeaders()" filename="pemeriksaan.csv"> Download CSV {{type}}</md-button>
+        	<md-button ng-click="changeInspect()"> Lihat {{ntype}} </md-button>
+        	<!-- <md-select ng-model="type" ng-change="changeInspect()">
+        	    <md-option ng-repeat="type in types" value="{{type}}">
+        	        {{type}}
+        	    </md-option>
+        	</md-select> -->
+        </md-input-container>
         <form ng-submit="tableParams.reload()" layout="row">
             <md-input-container md-no-float>
                 <md-icon md-svg-src="img/icons/ic_search_24px.svg"></md-icon>

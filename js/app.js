@@ -1,6 +1,8 @@
 var app = angular.module("alpukat", [
 	'ngMaterial', 
 	'ui.router', 
+	'ngSanitize', 
+	'ngCsv',
 	'ngMap', 
 	'ngTable', 
 	'underscore',

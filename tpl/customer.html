@@ -2,7 +2,8 @@
     <div layout="row">
         <h2>Daftar Pelanggan ({{customerNumber}})</h2>
         <span flex></span>
-        <md-input-container>
+        <md-input-container layout="row">
+        	<md-button ng-csv="customers" csv-header="headers" filename="pelanggan.csv"> Download CSV </md-button>
         	<md-button ng-click="customerDetail($event)"> Lihat Peta </md-button>
         </md-input-container>
         <form ng-submit="tableParams.reload()" layout="row">
@@ -10,7 +11,6 @@
                 <md-icon md-svg-src="img/icons/ic_search_24px.svg"></md-icon>
                 <input ng-model="query" type="search" placeholder="Cari">
             </md-input-container>
-            
         </form>
     </div>
     <table ng-table="tableParams" class="table bordered highlight" template-pagination="custom/pager">
@@ -20,7 +20,7 @@
                     <md-checkbox ng-click="xyz()"></md-checkbox>
                 </th>
                 <th>Idpel</th>
-                <th>Name</th>
+                <th>Nama</th>
                 <th>No Meter</th>
                 <th>Alamat</th>
                 <th>Tarif</th>
