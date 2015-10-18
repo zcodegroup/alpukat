@@ -18,34 +18,12 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
 
     .state('customer', {
         url: '/customer',
-        abstract: true,
         templateUrl: 'tpl/customer.html'
-    })
-
-    .state('customer.grid', {
-        url: '/customer/grid',
-        templateUrl: 'tpl/customer.grid.html',
-    })
-
-    .state('customer.map', {
-        url: '/customer/map',
-        templateUrl: 'tpl/customer.map.html'
     })
 
     .state('gardu', {
         url: '/gardu',
-        abstract: true,
         templateUrl: 'tpl/gardu.html'
-    })
-
-    .state('gardu.grid', {
-        url: '/gardu/grid',
-        templateUrl: 'tpl/gardu.grid.html',
-    })
-
-    .state('gardu.map', {
-        url: '/gardu/map',
-        templateUrl: 'tpl/gardu.map.html'
     })
 
     .state('inspect', {

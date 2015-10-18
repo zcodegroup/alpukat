@@ -76,6 +76,10 @@ app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTable
     }
 
     $scope.customerDetail = function(ev) {
+    	// var doc = new jsPDF();
+    	// doc.text(20, 20, 'Hello world.');
+    	// doc.save('Test.pdf');
+    	
         var customers = [];
         for (var i in $scope.tableParams.data) {
             var x = $scope.tableParams.data[i];
