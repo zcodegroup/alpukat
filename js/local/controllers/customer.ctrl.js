@@ -5,6 +5,7 @@ app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTable
     $scope.selectedCustomers = [];
     $scope.rowsizes = [5, 10, 20];
     $scope.customers = [];
+    $scope.selected = [];
     $scope.headers = ["IDPEL", "Nama", "No Meter", "Alamat", "Tarif", "Daya", "Gardu", "Tiang", "Latitude", "Longitude"];
 
     CustomerSvc.getAll().then(function (res){
@@ -34,13 +35,46 @@ app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTable
         zoom: 13
     };
 
+    var addSelected = function (c){
+    	var exist = false;
+    	for (var i in $scope.selected){
+    		var o = $scope.selected[i];
+    		if (o.id === c.id) {
+    			exist = true;
+    			break;
+    		}
+    	}
+    	if (!exist)
+    		$scope.selected.push(c);
+    }
+
+    var removeSelected = function(c){
+    	for (var i in $scope.selected){
+    		var o = $scope.selected[i];
+    		if (o.id === c.id) {
+    			$scope.selected.splice(i, 1);
+    			break;
+    		}
+    	}
+    }
+
+    var inSelected = function (c){
+    	for (var i in $scope.selected){
+    		var o = $scope.selected[i];
+    		if (o.id === c.id) return true;
+    	}
+    	return false;
+    }
+
     $scope.query = "";
     var selectall = false;
     $scope.xyz = function() {
         selectall = !selectall;
-        for (var i in $scope.tableParams.data) {
-            var x = $scope.tableParams.data[i];
-            x.selected = selectall;
+        for (var i=$scope.tableParams.data.length-1; i >= 0; i--){
+            var o = $scope.tableParams.data[i];
+        	o.selected = selectall;
+        	if (selectall) addSelected(angular.copy(o));
+        	else removeSelected(o);
         }
     }
 
@@ -64,14 +98,30 @@ app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTable
     };
 
     $scope.select = function(customer) {
-        $scope.customer = customer;
-        if ($scope.state.current.name === "customer.map")
-            $scope.selectedCustomers.push(customer);
-        if ($scope.state.current.name === "customer.grid")
-            $scope.customers.map(function(c) {
-                if (c.idpel !== customer.idpel) {
-                    c.selected = false;
+    	customer.selected = !customer.selected;
+    	if (customer.selected) addSelected(customer);
+    	else removeSelected(customer);
+    }
+
+    $scope.customerSelectedDialog = function(ev) {
+        var customers = $scope.selected;
+        $mdDialog.show({
+                controller: CustomersDialogController,
+                templateUrl: 'tpl/customer.selected.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                resolve: {
+                    param: function() {
+                        return {
+                            customers: customers
+                        };
+                    }
                 }
+            })
+            .then(function(answer) {
+                $scope.alert = 'You said the information was "' + answer + '".';
+            }, function() {
+                $scope.alert = 'You cancelled the dialog.';
             });
     }
 
@@ -80,14 +130,10 @@ app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTable
     	// doc.text(20, 20, 'Hello world.');
     	// doc.save('Test.pdf');
     	
-        var customers = [];
-        for (var i in $scope.tableParams.data) {
-            var x = $scope.tableParams.data[i];
-            if (x.selected) customers.push(x);
-        }
+        var customers = $scope.selected;
         $mdDialog.show({
                 controller: MapDialogController,
-                templateUrl: 'tpl/customer.dialog.html',
+                templateUrl: 'tpl/customer.map.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
                 resolve: {
@@ -108,7 +154,7 @@ app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTable
     $scope.inspectDetail = function(customer, ev) {
         $mdDialog.show({
             controller: CustomerInspectController,
-            templateUrl: 'tpl/customer.inspect.dialog.html',
+            templateUrl: 'tpl/customer.inspect.html',
             parent: angular.element(document.body),
             targetEvent: ev,
             resolve: {
@@ -138,7 +184,11 @@ app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTable
                 var limit = params.count();
                 var offset = (params.page() - 1) * limit;
                 CustomerSvc.search($scope.query, offset, limit).then(function(res) {
-                    console.log('result', res.data)
+                    console.log('result', res.data);
+                    for (var i in res.data){
+                    	var o = res.data[i];
+                    	o.selected = inSelected(o);
+                    }
                     $defer.resolve(res.data);
                     // $defer.resolve(filtered.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                 });
@@ -197,6 +247,13 @@ function CustomerInspectController($scope, $mdDialog, InspectSvc, param) {
         $scope.inspects = res.data;
     })
     $scope.customer = angular.copy(param.customer);
+    $scope.close = function() {
+        $mdDialog.cancel();
+    };
+}
+
+function CustomersDialogController($scope, $mdDialog, InspectSvc, param) {
+	$scope.customers = param.customers;
     $scope.close = function() {
         $mdDialog.cancel();
     };

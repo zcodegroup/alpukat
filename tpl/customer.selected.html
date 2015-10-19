@@ -1,0 +1,45 @@
+<md-dialog aria-label="Pelanggan Terpilih">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Pelanggan Terpilih</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="close()">
+                <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content  style="height:700px;width:700px">
+    	<table class="table bordered highlight">
+    		<thead>
+    			<tr>
+    				<!-- <th>
+    				    <md-checkbox ng-click="xyz()"></md-checkbox>
+    				</th> -->
+    				<th>IDPEL</th>
+    				<th>Nama</th>
+    				<th>No Meter</th>
+    				<th>Tarif</th>
+    				<th>Daya</th>
+    			</tr>
+    		</thead>
+    		<tbody>
+    			<tr ng-repeat="m in customers">
+    			    <!-- <td>
+    			        <md-checkbox ng-click="select(m)" ng-model="m.selected"></md-checkbox>
+    			    </td> -->
+    			    <td>{{m.idpel}}</td>
+    			    <td>{{m.name}}</td>
+    			    <td>{{m.meterno}}</td>
+    			    <td>{{m.tarif}}</td>
+    			    <td>{{m.daya}}</td>
+			    </tr>
+    		</tbody>
+    	</table>
+    </md-dialog-content>
+    <div class="md-actions" layout="row">
+        <span flex></span>
+        <md-button ng-click="close()" class="md-primary">
+            Tutup
+        </md-button>
+    </div>
+</md-dialog>
