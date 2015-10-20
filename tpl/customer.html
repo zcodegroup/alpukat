@@ -33,7 +33,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="m in $data" ng-click="m.selected = !m.selected">
+            <tr ng-repeat="m in $data" ng-click="select(m)">
                 <td>
                     <md-checkbox ng-click="select(m)" ng-model="m.selected"></md-checkbox>
                 </td>
