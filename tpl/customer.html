@@ -5,7 +5,7 @@
         <md-input-container layout="row">
         	<md-button ng-csv="customers" csv-header="headers" filename="pelanggan.csv"> Download CSV </md-button>
         	<md-button ng-click="customerDetail($event)"> Lihat Peta </md-button>
-        	<md-button ng-click="customerSelectedDialog($event)"> Pelanggan </md-button>
+        	<!-- <md-button ng-click="customerSelectedDialog($event)"> Pelanggan </md-button> -->
         	<md-button ng-click="customerImportDialog($event)"> Import </md-button>
         </md-input-container>
         <form ng-submit="tableParams.reload()" layout="row">

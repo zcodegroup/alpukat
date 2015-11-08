@@ -93,6 +93,19 @@ app.controller('GarduCtrl', function($scope, $state, $mdDialog, $sce, ngTablePar
             });
     }
 
+    $scope.garduImportDialog = function(ev) {
+        $mdDialog.show({
+            controller: GarduImportController,
+            templateUrl: 'tpl/gardu.import.html',
+            parent: angular.element(document.body),
+            targetEvent: ev
+        }).then(function(answer) {
+            $scope.alert = 'You said the information was "' + answer + '".';
+        }, function() {
+            $scope.alert = 'You cancelled the dialog.';
+        });
+    }
+
     $scope.inspectDetail = function(gardu, ev) {
         $mdDialog.show({
             controller: GarduInspectController,
@@ -198,4 +211,40 @@ function GarduInspectController($scope, $mdDialog, InspectSvc, param){
 	    $scope.close = function() {
 	        $mdDialog.cancel();
 	    };	
+}
+
+function GarduImportController($scope, $mdDialog, GarduSvc, ngTableParams){
+	$scope.gardus = [];
+	$scope.$watch('gardus', function (newval, oldval){
+		$scope.tableImport.data = newval;
+		$scope.tableImport.reload();
+		console.log($scope.tableImport)
+	});
+	$scope.tableImport = new ngTableParams({
+	    page: 1,
+	    count: 5,
+	    sorting: {
+	        name: 'asc'
+	    }
+	}, {
+	    total: 0, // length of data
+	    getData: function($defer, params) {
+	        $defer.resolve($scope.gardus);
+	    }
+	});
+
+	$scope.import = function (){
+		GarduSvc.import($scope.gardus).then(function (res){
+			console.log(res);
+			alert("Berhasil import");
+		}, function (res){
+			console.log(res);
+			alert("Gagal import");
+		})
+		$mdDialog.cancel();
+	}
+
+	$scope.close = function(){
+		$mdDialog.cancel();
+	}
 }

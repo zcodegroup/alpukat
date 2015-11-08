@@ -6,7 +6,7 @@ app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTable
     $scope.rowsizes = [5, 10, 20];
     $scope.customers = [];
     $scope.selected = [];
-    $scope.headers = ["IDPEL", "Nama", "No Meter", "Alamat", "Tarif", "Daya", "Gardu", "Tiang", "Latitude", "Longitude"];
+    $scope.headers = ["IDPEL", "Nama", "No Meter", "Alamat", "Tarif", "Daya", "Gardu", "Tiang", "Latitude", "Longitude", "Last Update"];
 
     CustomerSvc.getAll().then(function(res) {
         for (var i in res.data) {
@@ -21,7 +21,8 @@ app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTable
                 gardu: o.gardu,
                 tiang: o.tiang,
                 latitude: o.latitude,
-                longitude: o.longitude
+                longitude: o.longitude,
+                edited: o.edited
             }
             $scope.customers.push(x);
         }

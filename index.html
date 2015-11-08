@@ -15,11 +15,6 @@
     <md-content layout-fill>
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <!-- <h2>
-                <a href="" ui-sref="home" ng-click="gohome()">Alpukat</a> 
-                <span ng-if="share.subtitle"> > </span>
-                <a href="">{{share.subtitle}}</a>
-              </h2> -->
                 <span flex></span>
                 <md-button ng-click="gohome()" ng-class="share.menu == 'home' ? 'md-accent' : ''">
                     <md-icon md-menu-align-target md-svg-icon="device:dvr"></md-icon>
@@ -37,10 +32,10 @@
                     <md-icon md-menu-align-target md-svg-icon="device:gps-fixed"></md-icon>
                     Pemeriksaan
                 </md-button>
-                <!-- <md-button>
-                    <md-icon md-menu-align-target md-svg-icon="device:wifi-lock"></md-icon>
+                <md-button ui-sref="inspect" ng-class="share.menu == 'inspect' ? 'md-accent' : ''">
+                    <md-icon md-menu-align-target md-svg-icon="device:gps-fixed"></md-icon>
                     Login
-                </md-button> -->
+                </md-button>
                 <span flex></span>
             </div>
         </md-toolbar>

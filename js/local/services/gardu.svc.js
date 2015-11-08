@@ -29,6 +29,11 @@ app.factory('GarduSvc', function($http, $q, _, config) {
             return $http.get(url + order + token);
         },
 
+        import: function (data){
+        	var url = config.url + '/AlpukatGardu/BatchCreate';
+        	return $http.post(url, data);
+        },
+
         count: function() {
             var url = config.url + "/AlpukatGardu/count?";
             var token = "access_token=MWob5MXT64yRBImh07tN7hEZEF3W2brt82n1UXDQXmIJZV6av06RACA6PVS7EscJ";

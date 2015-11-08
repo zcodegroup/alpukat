@@ -12,8 +12,8 @@ var app = angular.module("alpukat", [
 ]);
 
 app.constant('config', {
-    // url: 'http://zcodeapi.herokuapp.com/api'
-    url: 'http://localhost:3000/api'
+    url: 'http://zcodeapi.herokuapp.com/api'
+    // url: 'http://localhost:3000/api'
 });
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {

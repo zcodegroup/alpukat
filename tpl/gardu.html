@@ -5,6 +5,7 @@
         <md-input-container layout="row">
         	<md-button ng-csv="gardus" csv-header="headers" filename="gardu.csv"> Download CSV </md-button>
         	<md-button ng-click="garduDetail($event)"> Lihat Peta </md-button>
+        	<md-button ng-click="garduImportDialog($event)"> Import </md-button>
         </md-input-container>
         <form ng-submit="tableParams.reload()" layout="row">
             <md-input-container md-no-float>
