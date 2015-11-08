@@ -8,20 +8,29 @@ var app = angular.module("alpukat", [
     'underscore',
     'uiGmapgoogle-maps',
     'ngCsvImport',
-    'angular-loading-bar'
+    'angular-loading-bar',
+    'LocalStorageModule'
 ]);
 
 app.constant('config', {
     url: 'http://zcodeapi.herokuapp.com/api'
-    // url: 'http://localhost:3000/api'
+        // url: 'http://localhost:3000/api'
+});
+
+app.constant('key', {
+	user: 'user'
+})
+
+app.config(function(localStorageServiceProvider) {
+    localStorageServiceProvider.setPrefix('alpukat');
+    localStorageServiceProvider.setStorageType('localStorage');//or sessionStorage
 });
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
-    $stateProvider
-        .state('home', {
-            url: '/',
-            templateUrl: 'tpl/home.html'
-        })
+    $stateProvider.state('home', {
+        url: '/',
+        templateUrl: 'tpl/home.html'
+    })
 
     .state('customer', {
         url: '/customer',
@@ -36,6 +45,12 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
     .state('inspect', {
         url: '/inspect',
         templateUrl: 'tpl/inspect.html'
+    })
+
+    .state('login', {
+        url: '/login',
+        controller: 'LoginCtrl',
+        templateUrl: 'tpl/login.html'
     })
 
     .state('test', {
