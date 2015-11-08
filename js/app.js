@@ -1,13 +1,20 @@
 var app = angular.module("alpukat", [
-	'ngMaterial', 
-	'ui.router', 
-	'ngSanitize', 
-	'ngCsv',
-	'ngMap', 
-	'ngTable', 
-	'underscore',
-	'uiGmapgoogle-maps', 
-	'angular-loading-bar']);
+    'ngMaterial',
+    'ui.router',
+    'ngSanitize',
+    'ngCsv',
+    'ngMap',
+    'ngTable',
+    'underscore',
+    'uiGmapgoogle-maps',
+    'ngCsvImport',
+    'angular-loading-bar'
+]);
+
+app.constant('config', {
+    // url: 'http://zcodeapi.herokuapp.com/api'
+    url: 'http://localhost:3000/api'
+});
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
     $stateProvider

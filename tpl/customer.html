@@ -6,6 +6,7 @@
         	<md-button ng-csv="customers" csv-header="headers" filename="pelanggan.csv"> Download CSV </md-button>
         	<md-button ng-click="customerDetail($event)"> Lihat Peta </md-button>
         	<md-button ng-click="customerSelectedDialog($event)"> Pelanggan </md-button>
+        	<md-button ng-click="customerImportDialog($event)"> Import </md-button>
         </md-input-container>
         <form ng-submit="tableParams.reload()" layout="row">
             <md-input-container md-no-float>
@@ -14,7 +15,7 @@
             </md-input-container>
         </form>
     </div>
-    <table ng-table="tableParams" class="table bordered highlight" template-pagination="custom/pager">
+    <table ng-table="tableParams" class="table bordered highlight" template-pagination="pager">
         <thead>
             <tr>
                 <th>
@@ -54,13 +55,4 @@
             </tr>
         </tbody>
     </table>
-    <script type="text/ng-template" id="custom/pager">
-        <div layout="row" class="center center-text ng-cloak">
-            <!--<pre>{{pages|json}}</pre>-->
-            <small ng-repeat="page in pages" ng-class="{'disabled': !page.active, 'previous': page.type == 'prev', 'next': page.type == 'next'}" ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type" style="margin-right:30px">
-        	    <a ng-switch-when="prev" ng-click="params.page(page.number)" href="">&laquo; Prev</a>
-        	    <a ng-switch-when="next" ng-click="params.page(page.number)" href="">Next &raquo;</a>
-        	</small>
-        </div>
-    </script>
 </div>

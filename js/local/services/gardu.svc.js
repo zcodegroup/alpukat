@@ -1,4 +1,4 @@
-app.factory('GarduSvc', function($http, $q, _) {
+app.factory('GarduSvc', function($http, $q, _, config) {
     return {
         get: function() {
             return $http.get('js/local/data.js');
@@ -6,7 +6,7 @@ app.factory('GarduSvc', function($http, $q, _) {
 
         search: function(q, offset, limit) {
             var d = $q.defer();
-            var url = "http://zcodeapi.herokuapp.com/api/AlpukatGardu?";
+            var url = config.url + "/AlpukatGardu?";
             var filter = "filter[where][gardu][regexp]=" + q + "/i&";
             var limit = "filter[limit]=" + limit + "&";
             var offs = "filter[offset]=" + offset + "&";
@@ -23,14 +23,14 @@ app.factory('GarduSvc', function($http, $q, _) {
         },
 
         getAll: function() {
-            var url = "http://zcodeapi.herokuapp.com/api/AlpukatGardu?";
+            var url = config.url + "/AlpukatGardu?";
             var order = "filter[order]=gardu&";
             var token = "access_token=MWob5MXT64yRBImh07tN7hEZEF3W2brt82n1UXDQXmIJZV6av06RACA6PVS7EscJ";
             return $http.get(url + order + token);
         },
 
         count: function() {
-            var url = "http://zcodeapi.herokuapp.com/api/AlpukatGardu/count?";
+            var url = config.url + "/AlpukatGardu/count?";
             var token = "access_token=MWob5MXT64yRBImh07tN7hEZEF3W2brt82n1UXDQXmIJZV6av06RACA6PVS7EscJ";
             return $http.get(url + token);
         },

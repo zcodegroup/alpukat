@@ -1,5 +1,5 @@
-app.factory('InspectSvc', function($http, $q, _) {
-    var baseUrl = "http://zcodeapi.herokuapp.com/api/";
+app.factory('InspectSvc', function($http, $q, _, config) {
+    var baseUrl = config.url;
     return {
         search: function(q, offset, limit, type) {
             var url = baseUrl + "AlpukatInspect?";

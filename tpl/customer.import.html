@@ -1,0 +1,37 @@
+<md-dialog aria-label="Pelanggan Terpilih">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Import Pelanggan <span ng-show="customers.length > 0">({{customers.length}})</span></h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="close()">
+                <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content  style="height:700px;width:1000px">
+    	<ng-csv-import content="content"
+    	    header="true" 
+    	    separator="','"
+    	    result="customers"></ng-csv-import>
+    	    <i ng-show="content.length>0 && customers.length == 0">Format file csv tidak valid</i>
+
+	    <table ng-table="tableImport" class="table bordered highlight" show-filter="false" template-pagination="pager">
+	        <tr ng-repeat="c in $data">
+	            <td title="'IDPEL'">{{c.idpel}}</td>
+	            <td title="'Nama'">{{c.name}}</td>
+	            <td title="'No Meter'">{{c.meterno}}</td>
+	            <td title="'Alamat'">{{c.address}}</td>
+	            <td title="'Tarif'">{{c.tarif}}</td>
+	            <td title="'Daya'">{{c.daya}}</td>
+	            <td title="'Gardu'">{{c.gardu}}</td>
+	            <td title="'Tiang'">{{c.tiang}}</td>
+	            <td title="'Lokasi'">{{c.latitude}}, {{c.longitude}}</td>
+	        </tr>
+	    </table>
+    </md-dialog-content>
+    <div class="md-actions" layout="row">
+        <span flex></span>
+        <md-button ng-click="import()" class="md-primary">Import</md-button>
+        <md-button ng-click="close()" class="md-primary">Tutup</md-button>
+    </div>
+</md-dialog>
