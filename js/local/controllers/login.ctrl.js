@@ -1,11 +1,14 @@
-app.controller('LoginCtrl', function ($scope, localStorageService, AuthSvc){
+app.controller('LoginCtrl', function ($scope, $state, $window, localStorageService, AuthSvc, key){
 	$scope.share.menu = 'login';
 	$scope.form = {};
 	$scope.login = function (){
 		AuthSvc.login($scope.form).then(function (res){
-			console.log('berhasil', res);
+			localStorageService.set(key.token, res.data.id);
+			$scope.form = {};
+			$state.go('home');
+			$window.location.reload();
 		}, function (res){
-			console.log(res);
+			alert(res.data.error.message);
 		})
 	}
 })

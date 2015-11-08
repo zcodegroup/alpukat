@@ -18,7 +18,8 @@ app.constant('config', {
 });
 
 app.constant('key', {
-	user: 'user'
+	user: 'user',
+	token: 'token'
 })
 
 app.config(function(localStorageServiceProvider) {
@@ -75,11 +76,17 @@ app.config(function($mdIconProvider) {
         .defaultIconSet('img/icons/sets/core-icons.svg', 24);
 });
 
-app.controller('AppCtrl', function($scope, $state) {
+app.controller('AppCtrl', function($scope, $window, $state, localStorageService, key) {
     $scope.share = {};
+    $scope.token = localStorageService.get(key.token);
     $scope.gohome = function() {
         $scope.share.subtitle = null;
         $state.go('home');
+    }
+    $scope.logout = function (){
+    	localStorageService.remove(key.token);
+    	$state.go('home');
+    	$window.location.reload();
     }
 });
 

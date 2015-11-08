@@ -1,5 +1,6 @@
-app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTableParams, CustomerSvc, _) {
+app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTableParams, CustomerSvc, _, localStorageService, key) {
     $scope.share.menu = 'customer';
+    $scope.token = localStorageService.get(key.token);
     $scope.query = "";
     $scope.state = $state;
     $scope.selectedCustomers = [];
