@@ -105,6 +105,16 @@ app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTable
         else removeSelected(customer);
     }
 
+    $scope.delete = function (id){
+    	var a = confirm("Apakah Anda yakin akan menghapus data pelanggan?");
+    	if (a) CustomerSvc.delete(id).then(function (res){
+    		alert("Sukses menghapus data pelanggan");
+    		$scope.tableParams.reload();
+    	}, function (res){
+    		alert("Gagal menghapus data pelanggan");
+    	});
+    }
+
     $scope.customerImportDialog = function(ev) {
         $mdDialog.show({
             controller: CustomerImportController,

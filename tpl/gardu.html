@@ -42,9 +42,8 @@
                 <td>{{m.penyulang}}</td>
                 <td>{{m.latitude}} {{m.latitude}}</td>
                 <td>
-                	<md-button ng-click="inspectDetail(m, $event)">
-                		<md-icon md-menu-align-target md-svg-icon="social:person"></md-icon>
-                	</md-button>
+                	<a href="" ng-click="delete(m.id)"><i class="material-icons">delete</i></a>
+                	<a href="" ng-click="inspectDetail(m, $event)"><i class="material-icons">person</i></a>
                 </td>
             </tr>
             <!-- <tr>

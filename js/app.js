@@ -9,7 +9,7 @@ var app = angular.module("alpukat", [
     'uiGmapgoogle-maps',
     'ngCsvImport',
     'angular-loading-bar',
-    'LocalStorageModule'
+    'LocalStorageModule',
 ]);
 
 app.constant('config', {

@@ -93,6 +93,16 @@ app.controller('GarduCtrl', function($scope, $state, $mdDialog, $sce, ngTablePar
             });
     }
 
+    $scope.delete = function (id){
+    	var a = confirm("Apakah Anda yakin akan menghapus data gardu?");
+    	if (a) GarduSvc.delete(id).then(function (res){
+    		alert("Sukses menghapus data gardu");
+    		$scope.tableParams.reload();
+    	}, function (res){
+    		alert("Gagal menghapus data gardu");
+    	});
+    }
+
     $scope.garduImportDialog = function(ev) {
         $mdDialog.show({
             controller: GarduImportController,

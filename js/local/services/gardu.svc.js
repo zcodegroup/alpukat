@@ -34,6 +34,11 @@ app.factory('GarduSvc', function($http, $q, _, config) {
         	return $http.post(url, data);
         },
 
+        delete: function (id){
+        	var url = config.url + '/AlpukatGardu/' + id;
+        	return $http.delete(url);
+        },
+
         count: function() {
             var url = config.url + "/AlpukatGardu/count?";
             var token = "access_token=MWob5MXT64yRBImh07tN7hEZEF3W2brt82n1UXDQXmIJZV6av06RACA6PVS7EscJ";
