@@ -1,4 +1,4 @@
-app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTableParams, CustomerSvc, _, localStorageService, key) {
+app.controller('CustomerCtrl', function($scope, $filter, $state, $mdDialog, $sce, ngTableParams, CustomerSvc, _, localStorageService, key) {
     $scope.share.menu = 'customer';
     $scope.token = localStorageService.get(key.token);
     $scope.query = "";
@@ -23,7 +23,7 @@ app.controller('CustomerCtrl', function($scope, $state, $mdDialog, $sce, ngTable
                 tiang: o.tiang,
                 latitude: o.latitude,
                 longitude: o.longitude,
-                edited: o.edited
+                edited: $filter('date')(o.edited, 'yyyy/MM/dd HH:mm:ss')
             }
             $scope.customers.push(x);
         }

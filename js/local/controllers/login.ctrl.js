@@ -6,8 +6,9 @@ app.controller('LoginCtrl', function ($scope, $state, $window, localStorageServi
 			localStorageService.set(key.token, res.data.id);
 			$scope.form = {};
 			$state.go('home');
-			$window.location.reload();
+			$scope.share.isLogged = true;
 		}, function (res){
+			console.log(res);
 			alert(res.data.error.message);
 		})
 	}

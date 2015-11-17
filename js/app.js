@@ -13,8 +13,8 @@ var app = angular.module("alpukat", [
 ]);
 
 app.constant('config', {
-    url: 'http://zcodeapi.herokuapp.com/api'
-        // url: 'http://localhost:3000/api'
+    // url: 'http://zcodeapi.herokuapp.com/api'
+        url: 'http://localhost:3000/api'
 });
 
 app.constant('key', {
@@ -77,8 +77,10 @@ app.config(function($mdIconProvider) {
 });
 
 app.controller('AppCtrl', function($scope, $window, $state, localStorageService, key) {
-    $scope.share = {};
     $scope.token = localStorageService.get(key.token);
+    $scope.share = {
+    	isLogged: $scope.token != null
+    };
     $scope.gohome = function() {
         $scope.share.subtitle = null;
         $state.go('home');
@@ -86,7 +88,7 @@ app.controller('AppCtrl', function($scope, $window, $state, localStorageService,
     $scope.logout = function (){
     	localStorageService.remove(key.token);
     	$state.go('home');
-    	$window.location.reload();
+    	$scope.share.isLogged = false;
     }
 });
 
