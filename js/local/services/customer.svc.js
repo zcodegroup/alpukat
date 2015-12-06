@@ -1,5 +1,5 @@
-app.factory('CustomerSvc', function($http, $q, _, config, localStorageService, key) {
-	var tokenId = localStorageService.get(key.token);
+app.factory('CustomerSvc', function($http, $q, _, config, $localStorage, key) {
+	var tokenId = $localStorage.token;
     return {
         search: function(q, offset, limit) {
             var d = $q.defer();

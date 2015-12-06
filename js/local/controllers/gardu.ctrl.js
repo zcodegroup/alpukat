@@ -1,28 +1,36 @@
-app.controller('GarduCtrl', function($scope, $state, $mdDialog, $sce, ngTableParams, GarduSvc, _) {
+app.controller('GarduCtrl', function($scope, $state, $mdDialog, $sce, ngTableParams, GarduSvc, _, $filter, $localStorage) {
     $scope.share.menu = 'gardu';
     $scope.query = "";
     $scope.state = $state;
     $scope.selectedGardus = [];
     $scope.rowsizes = [5, 10, 20];
-    $scope.headers = ["Gardu", "No Meter", "Kapasitas Trafo (kVA)", "CT Terpasang", "Penyulang", "Latitude", "Longitude"];
+    $scope.headers = ["Gardu", "No Meter", "Kapasitas Trafo (kVA)", "CT Terpasang", "Penyulang", "Latitude", "Longitude", "Last Update"];
     $scope.gardus = [];
 
 
-    GarduSvc.getAll().then(function (res){
-    	for (var i in res.data){
-    		var o = res.data[i];
-    		var x = {
-    			gardu: o.gardu,
-    			meterno: o.meterno,
-    			trafoCapacity: o.trafoCapacity,
-    			ctTerpasang: o.ctTerpasang,
-    			penyulang: o.penyulang,
-    			latitude: o.latitude,
-    			longitude: o.longitude
-    		}
-    		$scope.gardus.push(x);
-    	}
-    })
+    if (!$localStorage.gardus) {
+    	var temp = [];
+        GarduSvc.getAll().then(function(res) {
+            for (var i in res.data) {
+                var o = res.data[i];
+                var x = {
+                    gardu: o.gardu,
+                    meterno: o.meterno,
+                    trafoCapacity: o.trafoCapacity,
+                    ctTerpasang: o.ctTerpasang,
+                    penyulang: o.penyulang,
+                    latitude: o.latitude,
+                    longitude: o.longitude,
+                    edited: $filter('date')(o.edited, 'yyyy/MM/dd HH:mm:ss')
+                }
+                temp.push(x);
+            }
+            $scope.gardus = angular.copy(temp);
+            $localStorage.gardus = angular.copy(temp);
+        })
+    }else{
+    	$scope.gardus = angular.copy($localStorage.gardus);
+    }
 
     $scope.map = {
         center: {
@@ -34,14 +42,14 @@ app.controller('GarduCtrl', function($scope, $state, $mdDialog, $sce, ngTablePar
 
     $scope.query = "";
     var selectall = false;
-    $scope.xyz = function (){
-    	selectall = !selectall;
-    	for (var i in $scope.tableParams.data) {
-    	    var x = $scope.tableParams.data[i];
-    	    x.selected = selectall;
-    	}
+    $scope.xyz = function() {
+        selectall = !selectall;
+        for (var i in $scope.tableParams.data) {
+            var x = $scope.tableParams.data[i];
+            x.selected = selectall;
+        }
     }
-    
+
 
     $scope.search = function() {
         $scope.tableParams.reload()
@@ -68,11 +76,11 @@ app.controller('GarduCtrl', function($scope, $state, $mdDialog, $sce, ngTablePar
     }
 
     $scope.garduDetail = function(ev) {
-    	var gardus = [];
-    	for (var i in $scope.tableParams.data) {
-    	    var x = $scope.tableParams.data[i];
-    	    if (x.selected) gardus.push(x);
-    	}
+        var gardus = [];
+        for (var i in $scope.tableParams.data) {
+            var x = $scope.tableParams.data[i];
+            if (x.selected) gardus.push(x);
+        }
         $mdDialog.show({
                 controller: GarduMapController,
                 templateUrl: 'tpl/gardu.dialog.html',
@@ -81,7 +89,7 @@ app.controller('GarduCtrl', function($scope, $state, $mdDialog, $sce, ngTablePar
                 resolve: {
                     param: function() {
                         return {
-                        	gardus: gardus
+                            gardus: gardus
                         };
                     }
                 }
@@ -93,14 +101,14 @@ app.controller('GarduCtrl', function($scope, $state, $mdDialog, $sce, ngTablePar
             });
     }
 
-    $scope.delete = function (id){
-    	var a = confirm("Apakah Anda yakin akan menghapus data gardu?");
-    	if (a) GarduSvc.delete(id).then(function (res){
-    		alert("Sukses menghapus data gardu");
-    		$scope.tableParams.reload();
-    	}, function (res){
-    		alert("Gagal menghapus data gardu");
-    	});
+    $scope.delete = function(id) {
+        var a = confirm("Apakah Anda yakin akan menghapus data gardu?");
+        if (a) GarduSvc.delete(id).then(function(res) {
+            alert("Sukses menghapus data gardu");
+            $scope.tableParams.reload();
+        }, function(res) {
+            alert("Gagal menghapus data gardu");
+        });
     }
 
     $scope.garduImportDialog = function(ev) {
@@ -144,7 +152,7 @@ app.controller('GarduCtrl', function($scope, $state, $mdDialog, $sce, ngTablePar
         total: 0, // length of data
         getData: function($defer, params) {
             GarduSvc.count().then(function(n) {
-            	$scope.garduNumber = n.data.count;
+                $scope.garduNumber = n.data.count;
                 params.total(n.data.count);
                 var limit = params.count();
                 var offset = (params.page() - 1) * limit;
@@ -189,10 +197,10 @@ function GarduMapController($scope, $mdDialog, param) {
     var centerX = {};
     for (var i = $scope.gardus.length - 1; i >= 0; i--) {
         var c = $scope.gardus[i];
-    	if (i == $scope.gardus.length-1){
-    		centerX.latitude = c.latitude;
-    		centerX.longitude = c.longitude;
-    	}
+        if (i == $scope.gardus.length - 1) {
+            centerX.latitude = c.latitude;
+            centerX.longitude = c.longitude;
+        }
         $scope.markers.push({
             latitude: c.latitude,
             longitude: c.longitude,
@@ -212,49 +220,49 @@ function GarduMapController($scope, $mdDialog, param) {
 }
 
 
-function GarduInspectController($scope, $mdDialog, InspectSvc, param){
-		InspectSvc.searchByMeterno(param.gardu.meterno).then(function (res){
-			console.log(res.data);
-			$scope.inspects = res.data;
-		})
-	    $scope.gardu = angular.copy(param.gardu);
-	    $scope.close = function() {
-	        $mdDialog.cancel();
-	    };	
+function GarduInspectController($scope, $mdDialog, InspectSvc, param) {
+    InspectSvc.searchByMeterno(param.gardu.meterno).then(function(res) {
+        console.log(res.data);
+        $scope.inspects = res.data;
+    })
+    $scope.gardu = angular.copy(param.gardu);
+    $scope.close = function() {
+        $mdDialog.cancel();
+    };
 }
 
-function GarduImportController($scope, $mdDialog, GarduSvc, ngTableParams){
-	$scope.gardus = [];
-	$scope.$watch('gardus', function (newval, oldval){
-		$scope.tableImport.data = newval;
-		$scope.tableImport.reload();
-		console.log($scope.tableImport)
-	});
-	$scope.tableImport = new ngTableParams({
-	    page: 1,
-	    count: 5,
-	    sorting: {
-	        name: 'asc'
-	    }
-	}, {
-	    total: 0, // length of data
-	    getData: function($defer, params) {
-	        $defer.resolve($scope.gardus);
-	    }
-	});
+function GarduImportController($scope, $mdDialog, GarduSvc, ngTableParams) {
+    $scope.gardus = [];
+    $scope.$watch('gardus', function(newval, oldval) {
+        $scope.tableImport.data = newval;
+        $scope.tableImport.reload();
+        console.log($scope.tableImport)
+    });
+    $scope.tableImport = new ngTableParams({
+        page: 1,
+        count: 5,
+        sorting: {
+            name: 'asc'
+        }
+    }, {
+        total: 0, // length of data
+        getData: function($defer, params) {
+            $defer.resolve($scope.gardus);
+        }
+    });
 
-	$scope.import = function (){
-		GarduSvc.import($scope.gardus).then(function (res){
-			console.log(res);
-			alert("Berhasil import");
-		}, function (res){
-			console.log(res);
-			alert("Gagal import");
-		})
-		$mdDialog.cancel();
-	}
+    $scope.import = function() {
+        GarduSvc.import($scope.gardus).then(function(res) {
+            console.log(res);
+            alert("Berhasil import");
+        }, function(res) {
+            console.log(res);
+            alert("Gagal import");
+        })
+        $mdDialog.cancel();
+    }
 
-	$scope.close = function(){
-		$mdDialog.cancel();
-	}
+    $scope.close = function() {
+        $mdDialog.cancel();
+    }
 }

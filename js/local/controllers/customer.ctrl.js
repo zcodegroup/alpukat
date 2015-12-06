@@ -1,6 +1,6 @@
-app.controller('CustomerCtrl', function($scope, $filter, $state, $mdDialog, $sce, ngTableParams, CustomerSvc, _, localStorageService, key) {
+app.controller('CustomerCtrl', function($scope, $filter, $state, $mdDialog, $sce, ngTableParams, CustomerSvc, _, $localStorage, key) {
     $scope.share.menu = 'customer';
-    $scope.token = localStorageService.get(key.token);
+    $scope.token = $localStorage.token;
     $scope.query = "";
     $scope.state = $state;
     $scope.selectedCustomers = [];
@@ -9,25 +9,33 @@ app.controller('CustomerCtrl', function($scope, $filter, $state, $mdDialog, $sce
     $scope.selected = [];
     $scope.headers = ["IDPEL", "Nama", "No Meter", "Alamat", "Tarif", "Daya", "Gardu", "Tiang", "Latitude", "Longitude", "Last Update"];
 
-    CustomerSvc.getAll().then(function(res) {
-        for (var i in res.data) {
-            var o = res.data[i];
-            var x = {
-                idpel: o.idpel,
-                name: o.name,
-                meterno: o.meterno,
-                address: o.address,
-                tarif: o.tarif,
-                daya: o.daya,
-                gardu: o.gardu,
-                tiang: o.tiang,
-                latitude: o.latitude,
-                longitude: o.longitude,
-                edited: $filter('date')(o.edited, 'yyyy/MM/dd HH:mm:ss')
-            }
-            $scope.customers.push(x);
-        }
-    })
+
+    if (!$localStorage.customers){
+    	var temp = [];
+    	CustomerSvc.getAll().then(function(res) {
+    	    for (var i in res.data) {
+    	        var o = res.data[i];
+    	        var x = {
+    	            idpel: o.idpel,
+    	            name: o.name,
+    	            meterno: o.meterno,
+    	            address: o.address,
+    	            tarif: o.tarif,
+    	            daya: o.daya,
+    	            gardu: o.gardu,
+    	            tiang: o.tiang,
+    	            latitude: o.latitude,
+    	            longitude: o.longitude,
+    	            edited: $filter('date')(o.edited, 'yyyy/MM/dd HH:mm:ss')
+    	        }
+    	        temp.push(x);
+    	    }
+    	    $localStorage.customers = angular.copy(temp);
+    	    $scope.customers = angular.copy(temp);
+    	});
+    }else{
+    	$scope.customers = angular.copy($localStorage.customers);
+    }
 
     $scope.map = {
         center: {

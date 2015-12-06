@@ -1,9 +1,9 @@
-app.controller('LoginCtrl', function ($scope, $state, $window, localStorageService, AuthSvc, key){
+app.controller('LoginCtrl', function ($scope, $state, $window, $localStorage, AuthSvc, key){
 	$scope.share.menu = 'login';
 	$scope.form = {};
 	$scope.login = function (){
 		AuthSvc.login($scope.form).then(function (res){
-			localStorageService.set(key.token, res.data.id);
+			$localStorage.token = res.data.id;
 			$scope.form = {};
 			$state.go('home');
 			$scope.share.isLogged = true;

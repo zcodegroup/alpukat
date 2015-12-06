@@ -5,27 +5,22 @@ var app = angular.module("alpukat", [
     'ngCsv',
     'ngMap',
     'ngTable',
+    'ngStorage',
     'underscore',
     'uiGmapgoogle-maps',
     'ngCsvImport',
     'angular-loading-bar',
-    'LocalStorageModule',
 ]);
 
 app.constant('config', {
     // url: 'http://zcodeapi.herokuapp.com/api'
-        url: 'http://localhost:3000/api'
+        url: 'http://localhost:3002/api'
 });
 
 app.constant('key', {
 	user: 'user',
 	token: 'token'
 })
-
-app.config(function(localStorageServiceProvider) {
-    localStorageServiceProvider.setPrefix('alpukat');
-    localStorageServiceProvider.setStorageType('localStorage');//or sessionStorage
-});
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
     $stateProvider.state('home', {
@@ -76,8 +71,8 @@ app.config(function($mdIconProvider) {
         .defaultIconSet('img/icons/sets/core-icons.svg', 24);
 });
 
-app.controller('AppCtrl', function($scope, $window, $state, localStorageService, key) {
-    $scope.token = localStorageService.get(key.token);
+app.controller('AppCtrl', function($scope, $window, $state, $localStorage, key) {
+    $scope.token = $localStorage.token;
     $scope.share = {
     	isLogged: $scope.token != null
     };
@@ -86,7 +81,7 @@ app.controller('AppCtrl', function($scope, $window, $state, localStorageService,
         $state.go('home');
     }
     $scope.logout = function (){
-    	localStorageService.remove(key.token);
+    	$localStorage.$reset();
     	$state.go('home');
     	$scope.share.isLogged = false;
     }
