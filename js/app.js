@@ -13,8 +13,8 @@ var app = angular.module("alpukat", [
 ]);
 
 app.constant('config', {
-    // url: 'http://zcodeapi.herokuapp.com/api'
-        url: 'http://localhost:3002/api'
+    url: 'http://zcodeapi.herokuapp.com/api'
+        // url: 'http://localhost:3002/api'
 });
 
 app.constant('key', {
