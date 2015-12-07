@@ -7,9 +7,8 @@ app.controller('GarduCtrl', function($scope, $state, $mdDialog, $sce, ngTablePar
     $scope.headers = ["Gardu", "No Meter", "Kapasitas Trafo (kVA)", "CT Terpasang", "Penyulang", "Latitude", "Longitude", "Last Update"];
     $scope.gardus = [];
 
-
-    if (!$localStorage.gardus) {
-    	var temp = [];
+    var loadGardus = function() {
+        var temp = [];
         GarduSvc.getAll().then(function(res) {
             for (var i in res.data) {
                 var o = res.data[i];
@@ -27,9 +26,26 @@ app.controller('GarduCtrl', function($scope, $state, $mdDialog, $sce, ngTablePar
             }
             $scope.gardus = angular.copy(temp);
             $localStorage.gardus = angular.copy(temp);
+        });
+    }
+
+    if (!$localStorage.gardus) {
+        loadGardus();
+    } else {
+        GarduSvc.getLastEdited().then(function(res) {
+            if (res.data.length == 1) {
+                var odb = res.data[0];
+                var x = _.sortBy($localStorage.gardus, 'edited');
+                var olc = x.reverse()[0];
+                if (odb.edited < olc.edited) {
+                	loadGardus();
+                } else{
+                	$scope.gardus = angular.copy($localStorage.gardus);
+                }
+            }else{
+    	    	$scope.gardus = angular.copy($localStorage.gardus);
+    	    }
         })
-    }else{
-    	$scope.gardus = angular.copy($localStorage.gardus);
     }
 
     $scope.map = {

@@ -9,32 +9,49 @@ app.controller('CustomerCtrl', function($scope, $filter, $state, $mdDialog, $sce
     $scope.selected = [];
     $scope.headers = ["IDPEL", "Nama", "No Meter", "Alamat", "Tarif", "Daya", "Gardu", "Tiang", "Latitude", "Longitude", "Last Update"];
 
+    var loadCustomers = function() {
+        var temp = [];
+        CustomerSvc.getAll().then(function(res) {
+            for (var i in res.data) {
+                var o = res.data[i];
+                var x = {
+                    idpel: o.idpel,
+                    name: o.name,
+                    meterno: o.meterno,
+                    address: o.address,
+                    tarif: o.tarif,
+                    daya: o.daya,
+                    gardu: o.gardu,
+                    tiang: o.tiang,
+                    latitude: o.latitude,
+                    longitude: o.longitude,
+                    edited: $filter('date')(o.edited, 'yyyy/MM/dd HH:mm:ss')
+                }
+                temp.push(x);
+            }
+            $localStorage.customers = angular.copy(temp);
+            $scope.customers = angular.copy(temp);
+        });
+    }
 
-    if (!$localStorage.customers){
-    	var temp = [];
-    	CustomerSvc.getAll().then(function(res) {
-    	    for (var i in res.data) {
-    	        var o = res.data[i];
-    	        var x = {
-    	            idpel: o.idpel,
-    	            name: o.name,
-    	            meterno: o.meterno,
-    	            address: o.address,
-    	            tarif: o.tarif,
-    	            daya: o.daya,
-    	            gardu: o.gardu,
-    	            tiang: o.tiang,
-    	            latitude: o.latitude,
-    	            longitude: o.longitude,
-    	            edited: $filter('date')(o.edited, 'yyyy/MM/dd HH:mm:ss')
+    if (!$localStorage.customers) {
+        loadCustomers();
+    } else {
+    	CustomerSvc.getLastEdited().then(function(res) {
+    	    if (res.data.length == 1) {
+    	        var odb = res.data[0];
+    	        var x = _.sortBy($localStorage.customers, 'edited');
+    	        var olc = x.reverse()[0];
+    	        if (odb.edited < olc.edited) {
+    	        	loadCustomers();
+    	        } else{
+    	        	$scope.customers = angular.copy($localStorage.customers);
     	        }
-    	        temp.push(x);
+    	    }else{
+    	    	$scope.customers = angular.copy($localStorage.customers);
     	    }
-    	    $localStorage.customers = angular.copy(temp);
-    	    $scope.customers = angular.copy(temp);
-    	});
-    }else{
-    	$scope.customers = angular.copy($localStorage.customers);
+    	})
+        
     }
 
     $scope.map = {
@@ -113,14 +130,14 @@ app.controller('CustomerCtrl', function($scope, $filter, $state, $mdDialog, $sce
         else removeSelected(customer);
     }
 
-    $scope.delete = function (id){
-    	var a = confirm("Apakah Anda yakin akan menghapus data pelanggan?");
-    	if (a) CustomerSvc.delete(id).then(function (res){
-    		alert("Sukses menghapus data pelanggan");
-    		$scope.tableParams.reload();
-    	}, function (res){
-    		alert("Gagal menghapus data pelanggan");
-    	});
+    $scope.delete = function(id) {
+        var a = confirm("Apakah Anda yakin akan menghapus data pelanggan?");
+        if (a) CustomerSvc.delete(id).then(function(res) {
+            alert("Sukses menghapus data pelanggan");
+            $scope.tableParams.reload();
+        }, function(res) {
+            alert("Gagal menghapus data pelanggan");
+        });
     }
 
     $scope.customerImportDialog = function(ev) {
@@ -285,38 +302,38 @@ function CustomersDialogController($scope, $mdDialog, InspectSvc, param) {
 }
 
 
-function CustomerImportController($scope, $mdDialog, CustomerSvc, ngTableParams){
-	$scope.customers = [];
-	$scope.$watch('customers', function (newval, oldval){
-		$scope.tableImport.data = newval;
-		$scope.tableImport.reload();
-		console.log($scope.tableImport)
-	});
-	$scope.tableImport = new ngTableParams({
-	    page: 1,
-	    count: 5,
-	    sorting: {
-	        name: 'asc'
-	    }
-	}, {
-	    total: 0, // length of data
-	    getData: function($defer, params) {
-	        $defer.resolve($scope.customers);
-	    }
-	});
+function CustomerImportController($scope, $mdDialog, CustomerSvc, ngTableParams) {
+    $scope.customers = [];
+    $scope.$watch('customers', function(newval, oldval) {
+        $scope.tableImport.data = newval;
+        $scope.tableImport.reload();
+        console.log($scope.tableImport)
+    });
+    $scope.tableImport = new ngTableParams({
+        page: 1,
+        count: 5,
+        sorting: {
+            name: 'asc'
+        }
+    }, {
+        total: 0, // length of data
+        getData: function($defer, params) {
+            $defer.resolve($scope.customers);
+        }
+    });
 
-	$scope.import = function (){
-		CustomerSvc.import($scope.customers).then(function (res){
-			console.log(res);
-			alert("Berhasil import");
-		}, function (res){
-			console.log(res);
-			alert("Gagal import");
-		})
-		$mdDialog.cancel();
-	}
+    $scope.import = function() {
+        CustomerSvc.import($scope.customers).then(function(res) {
+            console.log(res);
+            alert("Berhasil import");
+        }, function(res) {
+            console.log(res);
+            alert("Gagal import");
+        })
+        $mdDialog.cancel();
+    }
 
-	$scope.close = function(){
-		$mdDialog.cancel();
-	}
+    $scope.close = function() {
+        $mdDialog.cancel();
+    }
 }

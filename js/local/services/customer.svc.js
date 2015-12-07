@@ -40,6 +40,12 @@ app.factory('CustomerSvc', function($http, $q, _, config, $localStorage, key) {
         delete: function (id){
         	var url = config.url + '/AlpukatCustomer/' + id + '?access_token=' + tokenId;
         	return $http.delete(url);
+        },
+
+        getLastEdited: function (){
+        	var url = config.url + "/AlpukatGardu?filter[order]=edited%20desc&filter[offset]=0&filter[limit]=1&";
+        	var token = "access_token=" + tokenId;
+        	return $http.get(url + token);
         }
     }
 });

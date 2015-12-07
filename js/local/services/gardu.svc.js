@@ -1,4 +1,4 @@
-app.factory('GarduSvc', function($http, $q, _, config) {
+app.factory('GarduSvc', function($http, $q, _, config, $localStorage) {
     return {
         get: function() {
             return $http.get('js/local/data.js');
@@ -11,7 +11,7 @@ app.factory('GarduSvc', function($http, $q, _, config) {
             var limit = "filter[limit]=" + limit + "&";
             var offs = "filter[offset]=" + offset + "&";
             var order = "filter[order]=gardu&";
-            var token = "access_token=MWob5MXT64yRBImh07tN7hEZEF3W2brt82n1UXDQXmIJZV6av06RACA6PVS7EscJ";
+            var token = "access_token=" + $localStorage;
             $http.get(url + filter + offs + limit + order + token).then(function(res) {
                 d.resolve({
                     data: res.data
@@ -25,23 +25,23 @@ app.factory('GarduSvc', function($http, $q, _, config) {
         getAll: function() {
             var url = config.url + "/AlpukatGardu?";
             var order = "filter[order]=gardu&";
-            var token = "access_token=MWob5MXT64yRBImh07tN7hEZEF3W2brt82n1UXDQXmIJZV6av06RACA6PVS7EscJ";
+            var token = "access_token=" + $localStorage;
             return $http.get(url + order + token);
         },
 
-        import: function (data){
-        	var url = config.url + '/AlpukatGardu/BatchCreate';
-        	return $http.post(url, data);
+        import: function(data) {
+            var url = config.url + '/AlpukatGardu/BatchCreate';
+            return $http.post(url, data);
         },
 
-        delete: function (id){
-        	var url = config.url + '/AlpukatGardu/' + id;
-        	return $http.delete(url);
+        delete: function(id) {
+            var url = config.url + '/AlpukatGardu/' + id;
+            return $http.delete(url);
         },
 
         count: function() {
             var url = config.url + "/AlpukatGardu/count?";
-            var token = "access_token=MWob5MXT64yRBImh07tN7hEZEF3W2brt82n1UXDQXmIJZV6av06RACA6PVS7EscJ";
+            var token = "access_token=" + $localStorage;
             return $http.get(url + token);
         },
 
@@ -63,6 +63,12 @@ app.factory('GarduSvc', function($http, $q, _, config) {
                 d.reject(e);
             });
             return d.promise;
+        },
+
+        getLastEdited: function (){
+        	var url = config.url + "/AlpukatGardu?filter[order]=edited%20desc&filter[offset]=0&filter[limit]=1&";
+        	var token = "access_token=" + $localStorage.token;
+        	return $http.get(url + token);
         }
     }
 });

@@ -71,7 +71,7 @@ app.config(function($mdIconProvider) {
         .defaultIconSet('img/icons/sets/core-icons.svg', 24);
 });
 
-app.controller('AppCtrl', function($scope, $window, $state, $localStorage, key) {
+app.controller('AppCtrl', function($scope, $window, $state, $localStorage, key, AuthSvc) {
     $scope.token = $localStorage.token;
     $scope.share = {
     	isLogged: $scope.token != null
@@ -81,9 +81,11 @@ app.controller('AppCtrl', function($scope, $window, $state, $localStorage, key) 
         $state.go('home');
     }
     $scope.logout = function (){
-    	$localStorage.$reset();
-    	$state.go('home');
-    	$scope.share.isLogged = false;
+    	AuthSvc.logout().then(function (){
+    		$localStorage.$reset();
+    		$state.go('home');
+    		$scope.share.isLogged = false;
+    	});
     }
 });
 
