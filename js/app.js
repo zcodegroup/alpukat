@@ -24,7 +24,7 @@ app.constant('key', {
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
     $stateProvider.state('home', {
-        url: '/',
+        url: '/',	
         templateUrl: 'tpl/home.html'
     })
 
@@ -81,11 +81,12 @@ app.controller('AppCtrl', function($scope, $window, $state, $localStorage, key, 
         $state.go('home');
     }
     $scope.logout = function (){
-    	AuthSvc.logout().then(function (){
+    	var f = function (){
     		$localStorage.$reset();
     		$state.go('home');
     		$scope.share.isLogged = false;
-    	});
+    	}
+    	AuthSvc.logout().then(f, f);
     }
 });
 

@@ -1,4 +1,5 @@
 app.factory('GarduSvc', function($http, $q, _, config, $localStorage) {
+    var token = $localStorage.token;
     return {
         get: function() {
             return $http.get('js/local/data.js');
@@ -39,9 +40,13 @@ app.factory('GarduSvc', function($http, $q, _, config, $localStorage) {
             return $http.delete(url);
         },
 
+        clear: function(){
+        	return $http.post(config.url + '/AlpukatGardu/clear?access_token=' + token);
+        },
+
         count: function() {
             var url = config.url + "/AlpukatGardu/count?";
-            var token = "access_token=" + $localStorage;
+            var token = "access_token=" + $localStorage.token;
             return $http.get(url + token);
         },
 

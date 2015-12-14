@@ -3,10 +3,11 @@
         <h2>Daftar Pelanggan ({{customerNumber}})</h2>
         <span flex></span>
         <md-input-container layout="row">
-        	<md-button ng-csv="customers" csv-header="headers" filename="pelanggan.csv" ng-if="customers.length > 0"> Download CSV </md-button>
+        	<md-button ng-csv="loadCustomers()" csv-header="headers" filename="pelanggan.csv"> Download CSV </md-button>
         	<md-button ng-click="customerDetail($event)"> Lihat Peta </md-button>
         	<!-- <md-button ng-click="customerSelectedDialog($event)"> Pelanggan </md-button> -->
         	<md-button ng-click="customerImportDialog($event)"> Import </md-button>
+        	<md-button ng-click="clear()"> Bersihkan </md-button>
         </md-input-container>
         <form ng-submit="tableParams.reload()" layout="row">
             <md-input-container md-no-float>

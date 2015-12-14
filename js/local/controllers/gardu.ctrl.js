@@ -1,4 +1,4 @@
-app.controller('GarduCtrl', function($scope, $state, $mdDialog, $sce, ngTableParams, GarduSvc, _, $filter, $localStorage) {
+app.controller('GarduCtrl', function($scope, $state, $mdDialog, $q, $sce, ngTableParams, GarduSvc, _, $filter, $localStorage) {
     $scope.share.menu = 'gardu';
     $scope.query = "";
     $scope.state = $state;
@@ -8,6 +8,7 @@ app.controller('GarduCtrl', function($scope, $state, $mdDialog, $sce, ngTablePar
     $scope.gardus = [];
 
     var loadGardus = function() {
+    	var deferred = $q.defer();
         var temp = [];
         GarduSvc.getAll().then(function(res) {
             for (var i in res.data) {
@@ -23,29 +24,10 @@ app.controller('GarduCtrl', function($scope, $state, $mdDialog, $sce, ngTablePar
                     edited: $filter('date')(o.edited, 'yyyy/MM/dd HH:mm:ss')
                 }
                 temp.push(x);
+                deferred.resolve(temp);
             }
-            $scope.gardus = angular.copy(temp);
-            $localStorage.gardus = angular.copy(temp);
         });
-    }
-
-    if (!$localStorage.gardus) {
-        loadGardus();
-    } else {
-        GarduSvc.getLastEdited().then(function(res) {
-            if (res.data.length == 1) {
-                var odb = res.data[0];
-                var x = _.sortBy($localStorage.gardus, 'edited');
-                var olc = x.reverse()[0];
-                if (odb.edited < olc.edited) {
-                	loadGardus();
-                } else{
-                	$scope.gardus = angular.copy($localStorage.gardus);
-                }
-            }else{
-    	    	$scope.gardus = angular.copy($localStorage.gardus);
-    	    }
-        })
+        return deferred.promise;
     }
 
     $scope.map = {
@@ -64,6 +46,13 @@ app.controller('GarduCtrl', function($scope, $state, $mdDialog, $sce, ngTablePar
             var x = $scope.tableParams.data[i];
             x.selected = selectall;
         }
+    }
+
+    $scope.clear = function(){
+    	GarduSvc.clear().then(function (){
+    		$scope.tableParams.reload();
+    		alert('Berhasil membersihkan data gardu');
+    	})
     }
 
 

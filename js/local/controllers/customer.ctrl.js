@@ -1,4 +1,4 @@
-app.controller('CustomerCtrl', function($scope, $filter, $state, $mdDialog, $sce, ngTableParams, CustomerSvc, _, $localStorage, key) {
+app.controller('CustomerCtrl', function($scope, $filter, $state, $mdDialog, $q, $sce, ngTableParams, CustomerSvc, _, $localStorage, key) {
     $scope.share.menu = 'customer';
     $scope.token = $localStorage.token;
     $scope.query = "";
@@ -9,49 +9,30 @@ app.controller('CustomerCtrl', function($scope, $filter, $state, $mdDialog, $sce
     $scope.selected = [];
     $scope.headers = ["IDPEL", "Nama", "No Meter", "Alamat", "Tarif", "Daya", "Gardu", "Tiang", "Latitude", "Longitude", "Last Update"];
 
-    var loadCustomers = function() {
-        var temp = [];
-        CustomerSvc.getAll().then(function(res) {
-            for (var i in res.data) {
-                var o = res.data[i];
-                var x = {
-                    idpel: o.idpel,
-                    name: o.name,
-                    meterno: o.meterno,
-                    address: o.address,
-                    tarif: o.tarif,
-                    daya: o.daya,
-                    gardu: o.gardu,
-                    tiang: o.tiang,
-                    latitude: o.latitude,
-                    longitude: o.longitude,
-                    edited: $filter('date')(o.edited, 'yyyy/MM/dd HH:mm:ss')
-                }
-                temp.push(x);
-            }
-            $localStorage.customers = angular.copy(temp);
-            $scope.customers = angular.copy(temp);
-        });
-    }
-
-    if (!$localStorage.customers) {
-        loadCustomers();
-    } else {
-    	CustomerSvc.getLastEdited().then(function(res) {
-    	    if (res.data.length == 1) {
-    	        var odb = res.data[0];
-    	        var x = _.sortBy($localStorage.customers, 'edited');
-    	        var olc = x.reverse()[0];
-    	        if (odb.edited < olc.edited) {
-    	        	loadCustomers();
-    	        } else{
-    	        	$scope.customers = angular.copy($localStorage.customers);
+    $scope.loadCustomers = function() {
+    	var deferred = $q.defer();
+    	var temp = [];
+    	CustomerSvc.getAll().then(function(res) {
+    	    for (var i in res.data) {
+    	        var o = res.data[i];
+    	        var x = {
+    	            idpel: o.idpel,
+    	            name: o.name,
+    	            meterno: o.meterno,
+    	            address: o.address,
+    	            tarif: o.tarif,
+    	            daya: o.daya,
+    	            gardu: o.gardu,
+    	            tiang: o.tiang,
+    	            latitude: o.latitude,
+    	            longitude: o.longitude,
+    	            edited: $filter('date')(o.edited, 'yyyy/MM/dd HH:mm:ss')
     	        }
-    	    }else{
-    	    	$scope.customers = angular.copy($localStorage.customers);
+    	        temp.push(x);
     	    }
-    	})
-        
+    	    deferred.resolve(temp);
+    	});
+    	return deferred.promise;
     }
 
     $scope.map = {
@@ -211,6 +192,13 @@ app.controller('CustomerCtrl', function($scope, $filter, $state, $mdDialog, $sce
         });
     }
 
+    $scope.clear = function(){
+    	CustomerSvc.clear().then(function (){
+    		$scope.tableParams.reload();
+    		alert('Berhasil membersihkan data pelanggan');
+    	})
+    }
+
     $scope.customerNumber = 0;
 
     $scope.tableParams = new ngTableParams({
@@ -323,14 +311,23 @@ function CustomerImportController($scope, $mdDialog, CustomerSvc, ngTableParams)
     });
 
     $scope.import = function() {
-        CustomerSvc.import($scope.customers).then(function(res) {
-            console.log(res);
-            alert("Berhasil import");
-        }, function(res) {
-            console.log(res);
-            alert("Gagal import");
-        })
-        $mdDialog.cancel();
+    	var data = angular.copy($scope.customers);
+    	var n = 30;
+    	var iteration = Math.ceil(data.length / n);
+    	counter = 0;
+    	for (var i=0; i < data.length; i+= n){
+    		var temp = data.slice(i, i + n);
+    		CustomerSvc.import(temp).then(function(res) {
+    			counter++;
+    			if (counter === iteration){
+    				alert("Import selesai");
+    				$mdDialog.cancel();
+    			}
+    		}, function(res) {
+    			counter++;
+    		    alert("Gagal import");
+    		})
+    	}
     }
 
     $scope.close = function() {

@@ -4,12 +4,13 @@ app.factory('CustomerSvc', function($http, $q, _, config, $localStorage, key) {
         search: function(q, offset, limit) {
             var d = $q.defer();
             var url = config.url + "/AlpukatCustomer?";
-            var filter = "filter[where][name][regexp]=" + q + "/i&";
-            var limit = "filter[limit]=" + limit + "&";
-            var offs = "filter[offset]=" + offset + "&";
-            var order = "filter[order]=name&";
-            var token = "access_token=" + tokenId;
-            $http.get(url + filter + offs + limit + order + token).then(function(res) {
+            url += "filter[where][or][0][name][regexp]=" + q + "/i&";
+            url += "filter[where][or][1][idpel][regexp]=" + q + "/i&";
+            url += "filter[limit]=" + limit + "&";
+            url += "filter[offset]=" + offset + "&";
+            url += "filter[order]=name&";
+            url += "access_token=" + tokenId;
+            $http.get(url).then(function(res) {
                 d.resolve({
                     data: res.data
                 })
@@ -32,6 +33,11 @@ app.factory('CustomerSvc', function($http, $q, _, config, $localStorage, key) {
             return $http.get(url + token);
         },
 
+        create: function (data){
+        	var url = config.url + '/AlpukatCustomer?access_token=' + tokenId;
+        	return $http.post(url, data);
+        },
+
         import: function (data){
         	var url = config.url + '/AlpukatCustomer/BatchCreate?access_token=' + tokenId;
         	return $http.post(url, data);
@@ -40,6 +46,10 @@ app.factory('CustomerSvc', function($http, $q, _, config, $localStorage, key) {
         delete: function (id){
         	var url = config.url + '/AlpukatCustomer/' + id + '?access_token=' + tokenId;
         	return $http.delete(url);
+        },
+
+        clear: function(){
+        	return $http.post(config.url + '/AlpukatCustomer/clear?access_token=' + tokenId);
         },
 
         getLastEdited: function (){
